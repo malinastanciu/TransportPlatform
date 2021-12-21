@@ -1,5 +1,10 @@
 {% extends 'account/main_layout_account.html' %}
 {% load static %}
+
+{% block page_name %}
+    {{ page_name }}
+{% endblock %}
+
 {% block form %}
     <form method="POST" action="">
         <div class="input-group mb-3">

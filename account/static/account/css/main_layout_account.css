@@ -3,21 +3,20 @@ html {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: #7abecc !important;
+    background-image: url("images/background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .user_card {
     width: 350px;
-    margin-top: 20%;
+    margin-top: 20vh;
     margin-bottom: auto;
-    background: #74cfbf;
+    background: lightskyblue;
     position: relative;
     display: flex;
     justify-content: center;
     flex-direction: column;
     padding: 10px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 5px;
 
 }
@@ -31,7 +30,7 @@ html {
 }
 .login_btn {
     width: 100%;
-    background: #33ccff !important;
+    background: #2B5BE9 !important;
     color: white !important;
 }
 .login_btn:focus {
@@ -42,7 +41,7 @@ html {
     padding: 0 2rem;
 }
 .input-group-text {
-    background: #f7ba5b !important;
+    background: #F5775C !important;
     color: white !important;
     border: 0 !important;
     border-radius: 0.25rem 0 0 0.25rem !important;
