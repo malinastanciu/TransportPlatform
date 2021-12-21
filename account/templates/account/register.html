@@ -7,6 +7,7 @@
 
 {% block form %}
     <form method="POST" action="">
+    {% csrf_token %}
         <div class="input-group mb-3">
             <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -23,14 +24,15 @@
             <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-key"></i></span>
             </div>
-            <input type="text" name="password1" class="form-control" placeholder="Password">
+            <input type="password" name="password1" class="form-control" placeholder="Password">
         </div>
         <div class="input-group mb-2">
             <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-key"></i></span>
             </div>
-            <input type="text" name="password2" class="form-control" placeholder="Re-enter password">
+            <input type="password" name="password2" class="form-control" placeholder="Re-enter password">
         </div>
+
         <div class="input-group mb-2">
             <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -44,10 +46,19 @@
             <input type="text" name="last_name" class="form-control" placeholder="Last name">
         </div>
 
-        <div class="d-flex justify-content-center mt-3 login_container">
+        <div class="input-group">
+            <b>Select a group:</b>
+            <div class="form-check">
+                <ul>
+                <li><input class="form-check-input" type="checkbox" value="transportator" name="check_box_list">Transporter</li>
+                <li><input class="form-check-input" type="checkbox" value="client"  name="check_box_list">Sender</li>
+                </ul>
+            </div>
+        </div>
+        <div class="justify-content-center">
             <input class="btn login_btn" type="submit" value="Register Account">
         </div>
-
+        {{ user.errors }}
     </form>
 {% endblock %}
 {% block action %}

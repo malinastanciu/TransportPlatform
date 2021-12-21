@@ -6,6 +6,7 @@
 
 {% block form %}
     <form method="POST" action="">
+    {% csrf_token %}
         <div class="input-group mb-3">
             <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -17,14 +18,16 @@
             <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-key"></i></span>
             </div>
-            <input type="text" name="password1" class="form-control" placeholder="Password">
+            <input type="password" name="password" class="form-control" placeholder="Password">
         </div>
 
 
-        <div class="d-flex justify-content-center mt-3 login_container">
+        <div class="d-flex justify-content-center mt-3">
             <input class="btn login_btn" type="submit" value="Login">
         </div>
-
+        {% for message in messages %}
+            <p id="messages">{{message}}</p>
+        {% endfor %}
     </form>
 {% endblock %}
 {% block action %}
