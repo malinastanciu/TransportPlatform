@@ -1,0 +1,54 @@
+{% extends 'account/main_layout_account.html' %}
+{% load static %}
+{% block form %}
+    <form method="POST" action="">
+        <div class="input-group mb-3">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <input type="text" name="username" class="form-control" placeholder="Username">
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
+            </div>
+            <input type="email" name="email" class="form-control" placeholder="Email">
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            <input type="text" name="password1" class="form-control" placeholder="Password">
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            <input type="text" name="password2" class="form-control" placeholder="Re-enter password">
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            <input type="text" name="first_name" class="form-control" placeholder="First name">
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            <input type="text" name="last_name" class="form-control" placeholder="Last name">
+        </div>
+
+        <div class="d-flex justify-content-center mt-3 login_container">
+            <input class="btn login_btn" type="submit" value="Register Account">
+        </div>
+
+    </form>
+{% endblock %}
+{% block action %}
+    <div class="mt-4">
+        <div class="d-flex justify-content-center links">
+            Already have an account? <a href="{% url 'login' %}" class="ml-2">Login</a>
+        </div>
+    </div>
+{% endblock %}

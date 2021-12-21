@@ -1,0 +1,32 @@
+{% extends 'account/main_layout_account.html' %}
+
+{% block form %}
+    <form method="POST" action="">
+        <div class="input-group mb-3">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <input type="text" name="username" class="form-control" placeholder="Username">
+        </div>
+
+        <div class="input-group mb-2">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            <input type="text" name="password1" class="form-control" placeholder="Password">
+        </div>
+
+
+        <div class="d-flex justify-content-center mt-3 login_container">
+            <input class="btn login_btn" type="submit" value="Login">
+        </div>
+
+    </form>
+{% endblock %}
+{% block action %}
+    <div class="mt-4">
+        <div class="d-flex justify-content-center links">
+            Don't have an account? <a href="{% url 'register' %}" class="ml-2">Sign Up</a>
+        </div>
+    </div>
+{% endblock %}
