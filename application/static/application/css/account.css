@@ -1,0 +1,23 @@
+.box1{
+    background-color: lightskyblue;
+    width: 310px;
+    height: 170px;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 15px;
+}
+.box1 ul li{
+    text-decoration: none;
+    display: inline-block;
+    margin-left: -25px;
+}
+.box2{
+    background-color: lightskyblue;
+    width: 310px;
+    height: 100px;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 20px;
+}
