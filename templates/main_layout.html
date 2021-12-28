@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            {% block page_title %}
+            {% endblock %}
+        </title>
+        {% block import %}
+        {% endblock %}
+    </head>
+
+    <body>
+        <header>
+            {% block page_header %}
+            {% endblock %}
+        </header>
+
+        <section>
+          <nav>
+              {% block page_nav %}
+              {% endblock %}
+          </nav>
+          <article>
+              {% block page_article %}
+              {% endblock %}
+          </article>
+        </section>
+
+        <footer>
+            {% block page_footer %}
+            {% endblock %}
+        </footer>
+    </body>
+</html>
