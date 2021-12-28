@@ -28,26 +28,26 @@ body {
     color: #818181;
 }
 
-.main {
+.main { /* nav bar */
     background-color: #111;
     height: 50px;
-    width: 100%;
-    position: fixed;
     margin-left: 200px; /* Same as the width of the sidenav */
     top: 0; /* Same as the width of the sidenav */
 }
 .main ul{
-    position: absolute;
-    left: 72%;
-    top:1vh;
+    list-style-type: none;
+    padding: 0;
+    overflow: hidden;
 }
 .main ul li{
-    display: inline-block;
+    float: right;
     color: white;
-
+    padding: 5px;
+    display: block;
+    text-decoration: none;
 }
+
 .content{
     margin-left: 220px;
-    margin-top: 100px;
 }
 

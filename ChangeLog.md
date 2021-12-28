@@ -20,3 +20,6 @@ What's new legend: [*] changed; [+] added; [-] fixed; [!] notes;
 
 ### 27.12.2021
 - [+] [2h - All team] - Create models
+
+### 28.12.2021
+- [+] [1h - Petrut] - Solved a bug: 'logout button not showing'.
