@@ -22,7 +22,9 @@ What's new legend: [*] changed; [+] added; [-] fixed; [!] notes;
 - [+] [2h - All team] - Create models
 
 ### 28.12.2021
-- [+] [1h - Petrut] - Solved a bug: 'logout button not showing'.
+- [+] [1h - Petrut] - Solved a bug: 'logout button not showing'
 
 ### 29.12.2021 
 - [+] [2.5h - Petrut] - Edited main template
+- [+] [1.5h - Petrut] - Created 'Create offer' page and starting to customize it
+- 

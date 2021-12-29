@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from arcgis.gis import GIS
 from IPython.display import display
 from application.functions import create_context
+from .forms import OfferForm
 
 
 # Create your views here.
@@ -18,7 +19,14 @@ def home(request):
     context = create_context(request)
     return render(request, 'application/home.html', context)
 
+
 @login_required(login_url='login')
 def account(request):
     context = create_context(request)
     return render(request, 'application/account.html', context)
+
+
+def offer_view(request):
+    context = create_context(request)
+    context['form'] = OfferForm()
+    return render(request, "application/create_offer.html", context)
