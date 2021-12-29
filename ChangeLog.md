@@ -23,3 +23,6 @@ What's new legend: [*] changed; [+] added; [-] fixed; [!] notes;
 
 ### 28.12.2021
 - [+] [1h - Petrut] - Solved a bug: 'logout button not showing'.
+
+### 29.12.2021 
+- [+] [2.5h - Petrut] - Edited main template
