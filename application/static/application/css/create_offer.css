@@ -1,7 +1,12 @@
-.content {
-    margin-left: 8rem;
+.container{
+    width: 500px;
+    clear: both;
 }
-.intField {
-    width: 30px;
-    background-color: blue;
+
+.container input {
+    width: 100%;
+    clear: both;
+}
+.input-submit{
+    width: 550px;
 }

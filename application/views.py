@@ -27,6 +27,10 @@ def account(request):
 
 
 def offer_view(request):
-    context = create_context(request)
-    context['form'] = OfferForm()
-    return render(request, "application/create_offer.html", context)
+    if request.method == "POST":
+        form = OfferForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = OfferForm()
+    return render(request, "application/create_offer.html", {'form': form})
