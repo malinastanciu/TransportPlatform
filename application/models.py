@@ -26,25 +26,13 @@ from django.utils.translation import gettext_lazy as _
 #     MACHINERY = 'machinery'
 
 # class FreightType(models.TextChoices):
-    #     FURNITURE = 'F', _('furniture')
-    #     ANIMALS = 'A', _('animals')
-    #     FOOD = 'FO', _('food')
-    #     CARS = 'C', _('cars')
-    #     MEDICATION = 'M', _('medication')
-    #     ELECTRONICS = 'E', _('electronics')
-    #     MACHINERY = 'MA', _('machinery')
-
-
-FURNITURE = 'furniture'
-ANIMALS = 'animals'
-FOOD = 'food'
-CARS = 'cars'
-MEDICATION = 'medication'
-ELECTRONICS = 'electronics'
-MACHINERY = 'machinery'
-
-TYPE_FREIGHT = [(FURNITURE, 'furniture'), (ANIMALS, 'animals'), (FOOD, 'food'), (CARS, 'cars'), (MEDICATION, 'medication'),
-                (ELECTRONICS, 'electronics'), (MACHINERY, 'machinery')]
+#     FURNITURE = 'F', _('furniture')
+#     ANIMALS = 'A', _('animals')
+#     FOOD = 'FO', _('food')
+#     CARS = 'C', _('cars')
+#     MEDICATION = 'M', _('medication')
+#     ELECTRONICS = 'E', _('electronics')
+#     MACHINERY = 'MA', _('machinery')
 
 
 class Truck(models.Model):
@@ -64,6 +52,7 @@ class Truck(models.Model):
     registration_plate = models.CharField(max_length=15, unique=True)
     fuel = models.CharField(max_length=10, choices=FuelType.choices)
     max_load = models.IntegerField()
+    ownerId = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Request(models.Model):
@@ -80,7 +69,7 @@ class Request(models.Model):
     registration_date = models.DateField(auto_now_add=True)
     arrival_date = models.DateField()
     max_price = models.FloatField()
-    freight_type = models.CharField(max_length=15, choices=TYPE_FREIGHT)
+    freight_type = models.CharField(max_length=15)
     weight = models.IntegerField()
 
 
@@ -88,7 +77,7 @@ class Offer(models.Model):
     id = models.AutoField(primary_key=True)
     senderID = models.ForeignKey(User, on_delete=models.CASCADE)
     truckID = models.ForeignKey(Truck, on_delete=models.CASCADE)
-    freight_type = models.CharField(max_length=15, choices=TYPE_FREIGHT)
+    freight_type = models.CharField(max_length=15)
     date = models.DateField()
     price_per_km = models.FloatField()
 
@@ -107,8 +96,6 @@ class Contract(models.Model):
         'longitude': models.FloatField()
     }
     date = models.DateField(auto_now_add=True)
-    freight_type = models.CharField(max_length=15, choices=TYPE_FREIGHT)
+    freight_type = models.TextField(max_length=15)
     final_price = models.FloatField()
     km = models.FloatField()
-
-

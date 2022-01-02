@@ -37,5 +37,4 @@ def create_context(request=None, extract_user_info=True):
     if extract_user_info:
         out.update(get_user_info(request))
 
-
     return out
