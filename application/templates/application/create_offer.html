@@ -5,11 +5,31 @@
 {% block content %}
     <link rel="stylesheet" href="{% static 'application/css/create_offer.css' %}">
     <div class="content">
-        <h1> Create an offer </h1>
+        <h1 style="margin-left: 120px;"> Create an offer </h1>
         <form action="" method="post">
             {% csrf_token %}
             <div class="form-group mb-3 container">
-                {{ form.as_p }}
+                <label for="sender">Sender: {{ sender }} </label><br>
+                <label for="truckID">Truck:</label>
+                <select id="truckID" name="truckID">
+                    {% for truck in trucks %}
+                        <option value="{{ truck.id }}">{{ truck.registration_plate }}</option>
+                    {% endfor %}
+                </select><br>
+
+                <label for="f_t">Freight Type:</label>
+                <select id="f_t" name="f_t">
+                    {% for freight in f_t %}
+                        <option value="{{ freight }}">{{ freight }}</option>
+                    {% endfor %}
+                </select><br>
+
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date"><br>
+
+                <label for="price_per_km">Price per km:</label>
+                <input type="number" id="price_per_km" name="price_per_km"> <br>
+
                 <input type="submit" value="Submit">
             </div>
         </form>
