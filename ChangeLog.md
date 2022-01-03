@@ -31,3 +31,6 @@ What's new legend: [*] changed; [+] added; [-] fixed; [!] notes;
 ### 02.01.2022 
 - [+] [2h - Petrut] - Worked at 'Create offer' (front-end and back-end)
 - [-] [2.5h - All team] - Finished 'Create offer' page.
+
+### 03.01.2022
+- [+] [3h - Petrut] - Added 'Trucks' page + functionalities + minor bugs.

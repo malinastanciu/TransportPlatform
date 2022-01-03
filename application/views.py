@@ -9,6 +9,8 @@ from application.functions import create_context
 from .forms import OfferForm
 
 TYPE_FREIGHT = ['furniture', 'animals', 'food', 'cars', 'medication', 'electronics', 'machinery']
+FUEL_TYPE = ['benzine', 'diesel']
+TRUCK_TYPE = ['truck', 'van', 'trailer', 'refrigerated truck']
 
 # Create your views here.
 # @login_required(login_url='login')
@@ -51,3 +53,21 @@ def offer_view(request):
     context = {'trucks': trucks, 'sender': sender, 'f_t': freight_type, 'date': date,
                'price_per_km': price_per_km}
     return render(request, "application/create_offer.html", context)
+
+
+@login_required(login_url='login')
+def trucks(request):
+    curr_trucks = Truck.objects.all().filter(ownerId=request.user)
+    new_truck = Truck()
+
+    if request.method == "POST":
+        new_truck.ownerId = request.user
+        new_truck.brand = request.POST.get('brand')
+        new_truck.registration_plate = request.POST.get('reg_plt')
+        new_truck.fuel = request.POST.get('fuel')
+        new_truck.type = request.POST.get('type')
+        new_truck.max_load = request.POST.get('max_load')
+        new_truck.save()
+
+    context = {'trucks': curr_trucks, 'fuel_t': FUEL_TYPE, 'truck_t': TRUCK_TYPE}
+    return render(request, "application/trucks.html", context=context)
