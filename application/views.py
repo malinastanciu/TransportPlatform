@@ -3,8 +3,6 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse
-from arcgis.gis import GIS
-from IPython.display import display
 from application.functions import create_context
 from .forms import OfferForm
 
@@ -71,3 +69,9 @@ def trucks(request):
 
     context = {'trucks': curr_trucks, 'fuel_t': FUEL_TYPE, 'truck_t': TRUCK_TYPE}
     return render(request, "application/trucks.html", context=context)
+
+
+@login_required(login_url='login')
+def create_request(request):
+    context = create_context(request)
+    return render(request, 'application/create_request.html', context)

@@ -34,3 +34,4 @@ What's new legend: [*] changed; [+] added; [-] fixed; [!] notes;
 
 ### 03.01.2022
 - [+] [3h - Petrut] - Added 'Trucks' page + functionalities + minor bugs.
+- [+] [1.5h - Edi] - Setup project + initialised 'Create request' page
