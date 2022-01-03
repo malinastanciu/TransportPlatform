@@ -1,0 +1,95 @@
+{% extends 'application/main_layout_application.html' %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'application/css/trucks.css' %}">
+    <div class="content">
+        <h3> Your trucks: </h3>
+        <table id="truckstb">
+            <tr>
+                <th>TruckID</th>
+                <th>Registration Plate</th>
+                <th>Brand</th>
+                <th>Type</th>
+                <th>Fuel</th>
+                <th>Max load (kg)</th>
+            </tr>
+
+            {% for truck in trucks %}
+                <tr>
+                    <td>{{ truck.id }}</td>
+                    <td>{{ truck.registration_plate }}</td>
+                    <td>{{ truck.brand }}</td>
+                    <td>{{ truck.type }}</td>
+                    <td>{{ truck.fuel }}</td>
+                    <td>{{ truck.max_load }}</td>
+                </tr>
+            {% endfor %}
+        </table><br>
+        <div class="container2">
+            <form action="" method="post">
+                {% csrf_token %}
+                <p>Add a new truck here:</p>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="reg_plt">Registration Plate:</label>
+                    </div>
+                    <div class="col-75">
+                        <input id="reg_plt" type="text" name="reg_plt"> <br>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="brand">Brand:</label>
+                    </div>
+                    <div class="col-75">
+                        <input id="brand" type="text" name="brand"><br>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="type">Type:</label>
+                    </div>
+                    <div class="col-75">
+                        <select id="type" name="type" >
+                            {% for t in truck_t %}
+                                <option value="{{ t }}">{{ t }}</option>
+                            {%  endfor %}
+                        </select>
+                        <br>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fuel">Fuel:</label>
+                    </div>
+                    <div class="col-75">
+                        <select id="fuel" name="fuel" >
+                            {% for f in fuel_t %}
+                                <option value="{{ f }}">{{ f }}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="max_load">Max load:</label>
+                    </div>
+                    <div class="col-75">
+                        <input id="max_load" name="max_load" type="number" value="5000" step="500"><br>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <input id="submit" type="submit" value="Submit"><br>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
