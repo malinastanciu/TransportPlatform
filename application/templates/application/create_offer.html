@@ -1,14 +1,17 @@
 {% extends 'application/main_layout_application.html' %}
 {% load static %}
-{% load myfilters %}
 
 {% block content %}
     <link rel="stylesheet" href="{% static 'application/css/create_offer.css' %}">
     <div class="content">
-        <h1 style="margin-left: 120px;"> Create an offer </h1>
+        <h1 style="margin-left: 40px;"> Create an offer </h1>
         <form action="" method="post">
             {% csrf_token %}
-            <div class="form-group mb-3 container">
+            <div class="container1" style="border-radius: 5px;
+                                            background-color: #f2f2f2;
+                                            padding: 20px;
+                                            width: 350px;
+                                            margin-left: 0px;">
                 <label for="sender">Sender: {{ sender }} </label><br>
                 <label for="truckID">Truck:</label>
                 <select id="truckID" name="truckID">
