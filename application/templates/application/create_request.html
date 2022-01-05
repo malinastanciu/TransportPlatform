@@ -1,9 +1,47 @@
 {% extends 'application/main_layout_application.html' %}
 {% load static %}
+{% block home %}
+{% endblock %}
 
 {% block content %}
     <link rel="stylesheet" href="{% static 'application/css/create_offer.css' %}">
+    <link rel="stylesheet" href="{% static 'application/css/create_request.css' %}">
     <!-- TODO -->
-    <h1 class="content">Create a request</h1>
+    <h1 class="content">Create a request for transportation</h1>
+    <div class="content">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="container1">
+                <label for="client">Client: {{ client }} </label><br>
+                <label for="freight_types">Freight Type:</label>
+                <select id="freight_types" name="freight_types">
+                    {% for freight in freight_types %}
+                        <option value="{{ freight }}">{{ freight }}</option>
+                    {% endfor %}
+                </select><br>
+                <label for="source">Source:</label>
+                <input type="text" id="source" name="source"> <br>
+                <label for="destination">Destination:</label>
+                <input type="text" id="destination" name="destination"> <br>
+                <label for="arrival_date">Needed by date:</label>
+                <input type="date" id="arrival_date" name="arrival_date"><br>
+                <label for="max_price">Maximum price/km:</label>
+                <input type="number" step="0.01" id="max_price" name="max_price"><br>
+
+                <label for="weight">Weight</label>
+                <input type="number" id="weight" name="weight"> <br>
+
+                <input class="btn btn-success" type="submit" value="Submit">
+
+            </div>
+            <br>
+        </form>
+        <div class="container1">
+            <h4 style="text-shadow: #292932">N.B.</h4>
+            <p>Source and destination should have the following format: Latitude;Longitude<br>
+                Input example: 123.456;-38.5765</p>
+        </div>
+
+    </div>
 
 {% endblock %}
