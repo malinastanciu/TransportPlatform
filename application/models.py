@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import Group, User
-from django.utils.translation import gettext_lazy as _
 
 
 class Truck(models.Model):
@@ -16,14 +15,8 @@ class Truck(models.Model):
 class Request(models.Model):
     id = models.AutoField(primary_key=True)
     clientID = models.ForeignKey(User, on_delete=models.CASCADE)
-    source = {
-        'latitude': models.FloatField(),
-        'longitude': models.FloatField()
-    }
-    destination = {
-        'latitude': models.FloatField(),
-        'longitude': models.FloatField()
-    }
+    source = models.TextField(max_length=25)
+    destination = models.TextField(max_length=25)
     registration_date = models.DateField(auto_now_add=True)
     arrival_date = models.DateField()
     max_price = models.FloatField()
@@ -45,14 +38,8 @@ class Contract(models.Model):
     transporterID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='transporter')
     senderID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
     truckID = models.ForeignKey(Truck, on_delete=models.CASCADE)
-    source = {
-        'latitude': models.FloatField(),
-        'longitude': models.FloatField()
-    }
-    destination = {
-        'latitude': models.FloatField(),
-        'longitude': models.FloatField()
-    }
+    source = models.TextField(max_length=25)
+    destination = models.TextField(max_length=25)
     date = models.DateField(auto_now_add=True)
     freight_type = models.TextField(max_length=15)
     final_price = models.FloatField()
