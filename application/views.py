@@ -1,6 +1,7 @@
 import datetime
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User, Group
 from django.shortcuts import render
 from django.http import HttpResponse
 from application.functions import create_context
@@ -115,3 +116,16 @@ def create_request(request):
                'destination': destination, 'arrival_date': arrival_date, 'weight': weight}
 
     return render(request, "application/create_request.html", context)
+
+
+@login_required(login_url='login')
+def administration(request):
+    context = create_context(request)
+    users = User.objects.all()
+    context['users'] = users
+    return render(request, "application/administration.html", context)
+
+
+@login_required(login_url='login')
+def update_user_information(request, pk):
+    pass
