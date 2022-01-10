@@ -124,8 +124,3 @@ def administration(request):
     users = User.objects.all()
     context['users'] = users
     return render(request, "application/administration.html", context)
-
-
-@login_required(login_url='login')
-def update_user_information(request, pk):
-    pass
