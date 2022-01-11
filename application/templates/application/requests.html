@@ -1,0 +1,62 @@
+{% extends 'application/main_layout_application.html' %}
+{% load static %}
+
+{% block home %}
+{% endblock %}
+
+{% block page_title %}
+    Requests
+{% endblock %}
+
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'application/css/requests.css' %}">
+    <div class="container" style="margin-left: 300px; margin-top: 20px">
+        <h1 style="">Requests</h1>
+        <div class="table-wrapper-scroll-y custom-scrollbar">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Client name</th>
+                    <th>Source</th>
+                    <th>Destination</th>
+                    <th>Registration date</th>
+                    <th>Arrival date</th>
+                    <th>Max price</th>
+                    <th>Freight type</th>
+                    <th>Weight</th>
+                    <th>Pick up the load</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for request in requests %}
+                    <tr>
+                        <td>{{ request.id }}</td>
+                        {% for user in users %}
+                            {% if user.id == request.clientID.id %}
+                                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        <td>{{ request.source }}</td>
+
+                        <td>{{ request.destination }}</td>
+                        <td>{{ request.registration_date }}</td>
+                        <td>{{ request.arrival_date }}</td>
+                        <td>{{ request.max_price }}</td>
+                        <td>{{ request.freight_type }}</td>
+                        <td>{{ request.weight }}</td>
+                        <td>
+                            <form>
+                                <button class="btn btn-sm" style="background-color: cadetblue; color: white">
+                                    Pick up
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

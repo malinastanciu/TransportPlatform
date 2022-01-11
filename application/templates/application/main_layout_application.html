@@ -31,9 +31,9 @@
             </li>
             {% if 'client' in user_groups %}
                 <li class="features-item">
-                    <a href="{% url 'offer' %}">
+                    <a href="{% url 'offers' %}">
                         <i class="fa fa-plus features-item-icon"></i>
-                        <span class="features-item-text">Offer</span>
+                        <span class="features-item-text">Offers</span>
                     </a>
                 </li>
             {% endif %}
@@ -42,6 +42,14 @@
                     <a href="{% url 'create_offer' %}">
                         <i class="fa fa-plus features-item-icon"></i>
                         <span class="features-item-text"> Create offer </span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if 'transportator' in user_groups %}
+                <li class="features-item">
+                    <a href="{% url 'requests' %}">
+                        <i class="fa fa-address-card features-item-icon"></i>
+                        <span class="features-item-text">Requests</span>
                     </a>
                 </li>
             {% endif %}

@@ -41,6 +41,12 @@ What's new legend: [*] changed; [+] added; [-] fixed; [!] notes;
 
 ### 05.01.2022
 - [+] [1h - All team] - Restrictions + main_layout updates
-- 
+
 ### 07.01.2022
-- [+] [1h - Edi, Malina] - Some updates 
+- [-] [1h - Edi, Malina] - Some updates 
+
+### 10.01.2022
+- [-] [1h - Malina] - Some updates
+
+### 11.01.2022
+- [+] [2.5h - Malina] - Created offers page and requests page

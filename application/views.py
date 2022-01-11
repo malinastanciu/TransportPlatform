@@ -119,17 +119,23 @@ def create_request(request):
 
 
 @login_required(login_url='login')
-def offer(request):
+def offers(request):
     context = create_context(request)
     users = User.objects.all()
     offers = Offer.objects.all()
     trucks = Truck.objects.all()
-    for user in users:
-        print(type(user.username))
-
-    for offer in offers:
-        print(type(offer.senderID.username))
     context['users'] = users
     context['offers'] = offers
     context['trucks'] = trucks
-    return render(request, "application/offer.html", context)
+    return render(request, "application/offers.html", context)
+
+
+@login_required(login_url='login')
+def requests(request):
+    context = create_context(request)
+    users = User.objects.all()
+    requests = Request.objects.all()
+    context['users'] = users
+    context['requests'] = requests
+    return render(request, "application/requests.html", context)
+
