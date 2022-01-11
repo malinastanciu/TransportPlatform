@@ -3,10 +3,9 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.shortcuts import render
-from django.http import HttpResponse
 from application.functions import create_context
 from .decorators import allowed_users
-from .forms import OfferForm
+from application.models import Offer, Truck, Request
 from datetime import date
 
 TYPE_FREIGHT = ['furniture', 'animals', 'food', 'cars', 'medication', 'electronics', 'machinery']
@@ -19,7 +18,7 @@ TRUCK_TYPE = ['truck', 'van', 'trailer', 'refrigerated truck']
 #     gis = GIS()
 #     map = gis.map("Palm Springs, CA")
 #     return render(request, 'application/home.html', {'map': map})
-from .models import Offer, Truck, Request
+
 
 
 @login_required(login_url='login')

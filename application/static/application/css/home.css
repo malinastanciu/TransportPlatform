@@ -1,4 +1,30 @@
 .content {
     margin-left: 300px;
     margin-top: 20px;
+
+}
+body {
+    background-image: url('images/transport.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+
+}
+.content{
+    position: relative;
+    animation-name: example;
+    animation-duration: 24s;
+    animation-iteration-count: infinite;
+}
+.content h1{
+    font-size: 100px;
+    font-weight: bold;
+}
+
+@keyframes example {
+  0%   {color:red; left:0px; top:0px;}
+  25%  {color:black; left:700px; top:0px;}
+  50%  {color:blue; left:700px; top:200px;}
+  75%  {color:green; left:0px; top:200px;}
+  100% {color:red; left:0px; top:0px;}
 }
