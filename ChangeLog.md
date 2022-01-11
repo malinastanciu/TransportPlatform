@@ -50,3 +50,5 @@ What's new legend: [*] changed; [+] added; [-] fixed; [!] notes;
 
 ### 11.01.2022
 - [+] [2.5h - Malina] - Created offers page and requests page
+- [*] [1h - Malina] - Updated home page
+- [-] [1h - Edi, Malina] - Updates before presentation

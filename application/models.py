@@ -22,6 +22,9 @@ class Request(models.Model):
     max_price = models.FloatField()
     freight_type = models.CharField(max_length=15)
     weight = models.IntegerField()
+    # phone = models.CharField(max_length=11)
+    # email = models.CharField(max_length=50)
+    # other_details = models.CharField(max_length=200)
 
 
 class Offer(models.Model):
