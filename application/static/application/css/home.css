@@ -22,9 +22,9 @@ body {
 }
 
 @keyframes example {
-  0%   {color:red; left:0px; top:0px;}
+  0%   {color:#AA3322; left:0px; top:0px;}
   25%  {color:black; left:700px; top:0px;}
-  50%  {color:blue; left:700px; top:200px;}
-  75%  {color:green; left:0px; top:200px;}
-  100% {color:red; left:0px; top:0px;}
+  50%  {color:#4876C0; left:700px; top:200px;}
+  75%  {color:#2B622B; left:0px; top:200px;}
+  100% {color:#AA3322; left:0px; top:0px;}
 }
