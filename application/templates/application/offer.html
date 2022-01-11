@@ -1,0 +1,56 @@
+{% extends 'application/main_layout_application.html' %}
+{% load static %}
+
+{% block home %}
+{% endblock %}
+
+{% block page_title %}
+    Offers
+{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'application/css/offer.css' %}">
+    <div class="container" style="margin-left: 300px; margin-top: 20px">
+        <h1 style="">Offers</h1>
+            <div class="table-wrapper-scroll-y custom-scrollbar">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Sender name</th>
+                            <th>Truck</th>
+                            <th>Freight type</th>
+                            <th>Date</th>
+                            <th>Price per km</th>
+                            <th>Accept the offer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for offer in offers %}
+                            <tr>
+                                <td>{{ offer.id }}</td>
+                                {% for user in users %}
+                                    {% if user.id == offer.senderID.id %}
+                                        <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                                {% for truck in trucks %}
+                                    {% if truck.id == offer.truckID.id %}
+                                        <td>{{ truck.registration_plate }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td>{{ offer.freight_type }}</td>
+                                <td>{{ offer.date }}</td>
+                                <td>{{ offer.price_per_km }}</td>
+                                <td>
+                                    <form>
+                                        <button class="btn btn-sm" style="background-color: darkslategray; color: white">Accept</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    </div>
+{% endblock %}

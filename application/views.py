@@ -119,8 +119,17 @@ def create_request(request):
 
 
 @login_required(login_url='login')
-def administration(request):
+def offer(request):
     context = create_context(request)
     users = User.objects.all()
+    offers = Offer.objects.all()
+    trucks = Truck.objects.all()
+    for user in users:
+        print(type(user.username))
+
+    for offer in offers:
+        print(type(offer.senderID.username))
     context['users'] = users
-    return render(request, "application/administration.html", context)
+    context['offers'] = offers
+    context['trucks'] = trucks
+    return render(request, "application/offer.html", context)

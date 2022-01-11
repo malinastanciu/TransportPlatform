@@ -29,6 +29,14 @@
                     <span class="features-item-text"> Account </span>
                 </a>
             </li>
+            {% if 'client' in user_groups %}
+                <li class="features-item">
+                    <a href="{% url 'offer' %}">
+                        <i class="fa fa-plus features-item-icon"></i>
+                        <span class="features-item-text">Offer</span>
+                    </a>
+                </li>
+            {% endif %}
             {% if 'transportator' in user_groups %}
                 <li class="features-item">
                     <a href="{% url 'create_offer' %}">

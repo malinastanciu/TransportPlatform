@@ -8,4 +8,5 @@ urlpatterns = [
     path('createoffer/', application_views.offer_view, name='create_offer'),
     path('trucks/', application_views.trucks, name='trucks'),
     path('createrequest/', application_views.create_request, name='create_request'),
+    path('offer/', application_views.offer, name='offer'),
 ]
