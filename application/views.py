@@ -5,6 +5,7 @@ from django.contrib.auth.models import User, Group
 from django.shortcuts import render
 from django.http import HttpResponse
 from application.functions import create_context
+from .decorators import allowed_users
 from .forms import OfferForm
 from datetime import date
 
@@ -37,6 +38,7 @@ def account(request):
     return render(request, 'application/account.html', context)
 
 
+@allowed_users(allowed_roles=['transportator'])
 @login_required(login_url='login')
 def offer_view(request):
     user = request.user
@@ -86,6 +88,7 @@ def trucks(request):
     return render(request, "application/trucks.html", context=context)
 
 
+@allowed_users(allowed_roles=['client'])
 @login_required(login_url='login')
 def create_request(request):
     user = request.user
@@ -118,6 +121,7 @@ def create_request(request):
     return render(request, "application/create_request.html", context)
 
 
+@allowed_users(allowed_roles=['client'])
 @login_required(login_url='login')
 def offers(request):
     context = create_context(request)
@@ -130,6 +134,7 @@ def offers(request):
     return render(request, "application/offers.html", context)
 
 
+@allowed_users(allowed_roles=['transportator'])
 @login_required(login_url='login')
 def requests(request):
     context = create_context(request)
@@ -138,4 +143,3 @@ def requests(request):
     context['users'] = users
     context['requests'] = requests
     return render(request, "application/requests.html", context)
-
