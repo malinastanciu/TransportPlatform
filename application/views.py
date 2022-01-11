@@ -2,7 +2,10 @@ import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.urls import reverse
+
 from application.functions import create_context
 from .decorators import allowed_users
 from application.models import Offer, Truck, Request
@@ -12,13 +15,13 @@ TYPE_FREIGHT = ['furniture', 'animals', 'food', 'cars', 'medication', 'electroni
 FUEL_TYPE = ['benzine', 'diesel']
 TRUCK_TYPE = ['truck', 'van', 'trailer', 'refrigerated truck']
 
+
 # Create your views here.
 # @login_required(login_url='login')
 # def home(request):
 #     gis = GIS()
 #     map = gis.map("Palm Springs, CA")
 #     return render(request, 'application/home.html', {'map': map})
-
 
 
 @login_required(login_url='login')
@@ -35,6 +38,12 @@ def account(request):
     user_groups = [group.name for group in user.groups.all()]
     context = {'user_groups': user_groups}
     return render(request, 'application/account.html', context)
+
+
+@allowed_users(allowed_roles=['admin'])
+@login_required(login_url='login')
+def administrator(request):
+    return redirect('admin')
 
 
 @allowed_users(allowed_roles=['transportator'])

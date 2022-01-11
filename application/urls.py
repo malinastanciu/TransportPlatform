@@ -10,4 +10,5 @@ urlpatterns = [
     path('createrequest/', application_views.create_request, name='create_request'),
     path('offers/', application_views.offers, name='offers'),
     path('requests/', application_views.requests, name='requests'),
+    path('admin/', application_views.administrator, name='admin'),
 ]

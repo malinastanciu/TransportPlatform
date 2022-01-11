@@ -52,3 +52,4 @@ What's new legend: [*] changed; [+] added; [-] fixed; [!] notes;
 - [+] [2.5h - Malina] - Created offers page and requests page
 - [*] [1h - Malina] - Updated home page
 - [-] [1h - Edi, Malina] - Updates before presentation
+- [+] [1h - Edi, Malina] - Created administration page

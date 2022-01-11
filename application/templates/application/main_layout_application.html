@@ -65,12 +65,22 @@
                     </a>
                 </li>
             {% endif %}
+            {% if 'admin' not in user_groups %}
                 <li class="features-item">
                     <a href="{% url 'trucks' %}">
                         <i class="fa fa-truck features-item-icon"></i>
                         <span class="features-item-text"> Trucks </span>
                     </a>
                 </li>
+            {% endif %}
+            {% if 'admin'  in user_groups %}
+                <li class="features-item">
+                    <a href="{% url 'admin' %}">
+                        <i class="fa fa-truck features-item-icon"></i>
+                        <span class="features-item-text"> Administration </span>
+                    </a>
+                </li>
+            {% endif %}
             <li class="features-item">
                 <form action="{% url 'logout' %}">
                     <button class="btn">
@@ -93,10 +103,9 @@
             <link rel="stylesheet" href="{% static 'application/css/home.css' %}">
             <div class="content">
                 <h1>Home</h1>
-
             </div>
-
         {% endblock %}
+
         {% block content %}
         {% endblock %}
     </div>
