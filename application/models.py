@@ -1,5 +1,8 @@
+from datetime import datetime
+
 from django.db import models
 from django.contrib.auth.models import Group, User
+from django.utils import timezone
 
 
 class Truck(models.Model):
@@ -17,14 +20,14 @@ class Request(models.Model):
     clientID = models.ForeignKey(User, on_delete=models.CASCADE)
     source = models.TextField(max_length=25)
     destination = models.TextField(max_length=25)
-    registration_date = models.DateField(auto_now_add=True)
-    arrival_date = models.DateField()
-    max_price = models.FloatField()
+    departure_date = models.DateField(default=timezone.now())
+    arrival_date = models.DateField(default=timezone.now())
+    max_price = models.FloatField(default=0)
     freight_type = models.CharField(max_length=15)
     weight = models.IntegerField()
-    # phone = models.CharField(max_length=11)
-    # email = models.CharField(max_length=50)
-    # other_details = models.CharField(max_length=200)
+    phone = models.CharField(max_length=11, default='0')
+    email = models.CharField(max_length=50, default='a')
+    other_details = models.CharField(max_length=200, default='a')
 
 
 class Offer(models.Model):
@@ -33,7 +36,15 @@ class Offer(models.Model):
     truckID = models.ForeignKey(Truck, on_delete=models.CASCADE)
     freight_type = models.CharField(max_length=15)
     date = models.DateField()
-    price_per_km = models.FloatField()
+    price_per_km = models.FloatField(default=0)
+    price_per_km_emptyTruck = models.FloatField(default=0)
+    departure_date = models.DateField(default=timezone.now())
+    source = models.CharField(max_length=30, default='a')
+    arrival_date = models.DateField(default=timezone.now())
+    destination = models.CharField(max_length=30, default='a')
+    phone = models.CharField(max_length=11, default='0')
+    email = models.CharField(max_length=50, default='a')
+    other_details = models.CharField(max_length=200, default='a')
 
 
 class Contract(models.Model):
