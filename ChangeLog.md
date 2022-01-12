@@ -56,3 +56,4 @@ What's new legend: [*] changed; [+] added; [-] fixed; [!] notes;
 
 ### 12.01.2022
 - [*] [1h - Malina] - Updated models, updated create offer page and create request page
+- [+] [3h - Malina] - Created contract and the function to generate the contract
