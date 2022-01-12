@@ -21,11 +21,14 @@
                     <th>Client name</th>
                     <th>Source</th>
                     <th>Destination</th>
-                    <th>Registration date</th>
+                    <th>Departure date</th>
                     <th>Arrival date</th>
                     <th>Max price</th>
                     <th>Freight type</th>
                     <th>Weight</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Other details</th>
                     <th>Pick up the load</th>
                 </tr>
                 </thead>
@@ -41,11 +44,14 @@
                         <td>{{ request.source }}</td>
 
                         <td>{{ request.destination }}</td>
-                        <td>{{ request.registration_date }}</td>
+                        <td>{{ request.departure_date }}</td>
                         <td>{{ request.arrival_date }}</td>
                         <td>{{ request.max_price }}</td>
                         <td>{{ request.freight_type }}</td>
                         <td>{{ request.weight }}</td>
+                        <td>{{ request.phone }}</td>
+                        <td>{{ request.email }}</td>
+                        <td>{{ request.other_details }}</td>
                         <td>
                             <form>
                                 <button class="btn btn-sm" style="background-color: cadetblue; color: white">

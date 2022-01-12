@@ -10,7 +10,7 @@
 
 {% block content %}
     <link rel="stylesheet" href="{% static 'application/css/offers.css' %}">
-    <div class="container" style="margin-left: 300px; margin-top: 20px">
+    <div style="margin-left: 300px; margin-top: 20px">
         <h1 style="">Offers</h1>
             <div class="table-wrapper-scroll-y custom-scrollbar">
                 <table class="table table-bordered">
@@ -20,8 +20,15 @@
                             <th>Sender name</th>
                             <th>Truck</th>
                             <th>Freight type</th>
-                            <th>Date</th>
+                            <th>Departure date</th>
+                            <th>Arrival date</th>
                             <th>Price per km</th>
+                            <th>Price per km with empty truck</th>
+                            <th>Source</th>
+                            <th>Destination</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Other details</th>
                             <th>Accept the offer</th>
                         </tr>
                     </thead>
@@ -40,8 +47,15 @@
                                     {% endif %}
                                 {% endfor %}
                                 <td>{{ offer.freight_type }}</td>
-                                <td>{{ offer.date }}</td>
+                                <td>{{ offer.departure_date }}</td>
+                                <td>{{ offer.arrival_date }}</td>
                                 <td>{{ offer.price_per_km }}</td>
+                                <td>{{ offer.price_per_km_emptyTruck }}</td>
+                                <td>{{ offer.source }}</td>
+                                <td>{{ offer.destination }}</td>
+                                <td>{{ offer.phone }}</td>
+                                <td>{{ offer.email }}</td>
+                                <td>{{ offer.other_details }}</td>
                                 <td>
                                     <form>
                                         <button class="btn btn-sm" style="background-color: darkslategray; color: white">Accept</button>

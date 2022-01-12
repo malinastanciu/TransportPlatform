@@ -1,7 +1,7 @@
 .custom-scrollbar {
     position: relative;
     overflow: auto;
-    height: 600px;
+    width: 1200px;
 }
 
 .table-wrapper-scroll-y {
@@ -14,11 +14,6 @@
 th{
     background-color: darkslategray;
     color: white;
+    font-size: 10px;
 }
-.container1 {
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 20px;
-    width: 1000px;
-    margin-left: 0px;
-}
+

@@ -53,3 +53,6 @@ What's new legend: [*] changed; [+] added; [-] fixed; [!] notes;
 - [*] [1h - Malina] - Updated home page
 - [-] [1h - Edi, Malina] - Updates before presentation
 - [+] [1h - Edi, Malina] - Created administration page
+
+### 12.01.2022
+- [*] [1h - Malina] - Updated models, updated create offer page and create request page

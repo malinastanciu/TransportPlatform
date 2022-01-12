@@ -55,22 +55,27 @@ def offer_view(request):
     trucks = Truck.objects.all().filter(ownerId=request.user)
     sender = request.user.username.__str__()
     freight_type = TYPE_FREIGHT
-    date = datetime.date.today()
     price_per_km = 0
 
     if request.method == "POST":
         offer.senderID = request.user
         offer.truckID = Truck.objects.all().get(id=request.POST.get("truckID"))
         offer.freight_type = request.POST.get("f_t")
-        offer.date = request.POST.get('date')
         offer.price_per_km = request.POST.get('price_per_km')
+        offer.price_per_km_emptyTruck = request.POST.get('price_per_km_emptyTruck')
+        offer.departure_date = request.POST.get('departure_date')
+        offer.arrival_date = request.POST.get('arrival_date')
+        offer.source = request.POST.get('source')
+        offer.destination = request.POST.get('destination')
+        offer.phone = request.POST.get('phone')
+        offer.email = request.POST.get('email')
+        offer.other_details = request.POST.get('other_details')
         offer.save()
 
     context = {'user_groups': user_groups,
                'trucks': trucks,
                'sender': sender,
                'f_t': freight_type,
-               'date': date,
                'price_per_km': price_per_km}
     return render(request, "application/create_offer.html", context)
 
@@ -115,11 +120,14 @@ def create_request(request):
         transport_request.clientID = request.user
         transport_request.source = request.POST.get('source')
         transport_request.destination = request.POST.get('destination')
-        transport_request.freight_type = request.POST.get('freight_types')
+        transport_request.departure_date = request.POST.get('departure_date')
         transport_request.arrival_date = request.POST.get('arrival_date')
+        transport_request.freight_type = request.POST.get('freight_types')
         transport_request.max_price = request.POST.get('max_price')
         transport_request.weight = request.POST.get('weight')
-        transport_request.registration_date = date.today()
+        transport_request.phone = request.POST.get('phone')
+        transport_request.email = request.POST.get('email')
+        transport_request.other_details = request.POST.get('other_details')
         transport_request.save()
 
     context = {'user_groups': user_groups, 'client': client, 'freight_types': freight_types,

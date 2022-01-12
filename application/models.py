@@ -35,7 +35,6 @@ class Offer(models.Model):
     senderID = models.ForeignKey(User, on_delete=models.CASCADE)
     truckID = models.ForeignKey(Truck, on_delete=models.CASCADE)
     freight_type = models.CharField(max_length=15)
-    date = models.DateField()
     price_per_km = models.FloatField(default=0)
     price_per_km_emptyTruck = models.FloatField(default=0)
     departure_date = models.DateField(default=timezone.now())
