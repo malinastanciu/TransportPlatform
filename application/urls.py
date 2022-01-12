@@ -7,5 +7,9 @@ urlpatterns = [
     path('account/', application_views.account, name='account'),
     path('createoffer/', application_views.offer_view, name='create_offer'),
     path('trucks/', application_views.trucks, name='trucks'),
-    path('createrequest/', application_views.create_request, name='create_request')
+    path('createrequest/', application_views.create_request, name='create_request'),
+    path('offers/', application_views.offers, name='offers'),
+    path('requests/', application_views.requests, name='requests'),
+    path('admin/', application_views.administrator, name='admin'),
+    path('generate_contract/<str:pk>', application_views.generate_contract, name='generate_contract'),
 ]

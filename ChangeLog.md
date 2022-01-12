@@ -41,3 +41,19 @@ What's new legend: [*] changed; [+] added; [-] fixed; [!] notes;
 
 ### 05.01.2022
 - [+] [1h - All team] - Restrictions + main_layout updates
+
+### 07.01.2022
+- [-] [1h - Edi, Malina] - Some updates 
+
+### 10.01.2022
+- [-] [1h - Malina] - Some updates
+
+### 11.01.2022
+- [+] [2.5h - Malina] - Created offers page and requests page
+- [*] [1h - Malina] - Updated home page
+- [-] [1h - Edi, Malina] - Updates before presentation
+- [+] [1h - Edi, Malina] - Created administration page
+
+### 12.01.2022
+- [*] [1h - Malina] - Updated models, updated create offer page and create request page
+- [+] [3h - Malina] - Created contract and the function to generate the contract

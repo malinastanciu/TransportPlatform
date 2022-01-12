@@ -1,12 +1,17 @@
 {% extends 'application/main_layout_application.html' %}
 {% load static %}
+
 {% block home %}
+{% endblock %}
+
+{% block page_title %}
+    Create offer
 {% endblock %}
 
 {% block content %}
     <link rel="stylesheet" href="{% static 'application/css/create_offer.css' %}">
-    <div class="content">
-        <h1 style="margin-left: 40px;"> Create an offer </h1>
+    <div class="content" style="margin-top: 20px; margin-left: 300px">
+        <h1> Create an offer </h1>
         <form action="" method="post">
             {% csrf_token %}
             <div class="container1" style="border-radius: 5px;
@@ -29,13 +34,34 @@
                     {% endfor %}
                 </select><br>
 
-                <label for="date">Date:</label>
-                <input type="date" id="date" name="date"><br>
-
                 <label for="price_per_km">Price per km:</label>
-                <input type="number" id="price_per_km" name="price_per_km"> <br>
+                <input type="number" id="price_per_km" name="price_per_km"><br>
 
-                <input type="submit" value="Submit">
+                <label for="price_per_km_emptyTruck">Price per km with empty truck:</label>
+                <input type="number" id="price_per_km_emptyTruck" name="price_per_km_emptyTruck"> <br>
+
+                <label for="departure_date">Departure date:</label>
+                <input type="date" id="departure_date" name="departure_date"> <br>
+
+                <label for="arrival_date">Arrival date:</label>
+                <input type="date" id="arrival_date" name="arrival_date"> <br>
+
+                <label for="source">Source:</label>
+                <input type="text" id="source" name="source"> <br>
+
+                <label for="destination">Destination:</label>
+                <input type="text" id="destination" name="destination"> <br>
+
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone"> <br>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email"> <br>
+
+                <label for="other_details">Other details:</label>
+                <input type="text" id="other_details" name="other_details"> <br>
+
+                <input type="submit" class="btn btn-info" value="Submit">
             </div>
         </form>
 

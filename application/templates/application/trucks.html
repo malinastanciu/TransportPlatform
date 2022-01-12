@@ -1,11 +1,17 @@
 {% extends 'application/main_layout_application.html' %}
 {% load static %}
+
 {% block home %}
 {% endblock %}
+
+{% block page_title %}
+    Trucks
+{% endblock %}
+
 {% block content %}
     <link rel="stylesheet" href="{% static 'application/css/trucks.css' %}">
-    <div class="content">
-        <h3> Your trucks: </h3>
+    <div style="margin-left: 300px; margin-top: 20px">
+        <h1> Your trucks: </h1>
         <table id="truckstb">
             <tr>
                 <th>TruckID</th>

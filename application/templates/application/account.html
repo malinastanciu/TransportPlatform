@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
     <link rel="stylesheet" href="{% static 'application/css/account.css' %}">
-    <div style="margin-left: 15rem">
+    <div class="container" style="margin-left: 300px; margin-top: 20px">
         <h1>Account</h1>
         <div class="box1">
             <b>User information:</b>
@@ -13,6 +13,7 @@
                 <li>Email: <b>{{ user.email }}</b></li> <br>
                 <li>First name: <b>{{ user.first_name }}</b></li> <br>
                 <li>Last name: <b>{{ user.last_name }}</b></li> <br>
+                <li>User groups: <b>| </b>{% for group in user_groups %}<b>{{ group }} | </b>{% endfor %}</li> <br>
             </ul>
         </div>
         <br>
