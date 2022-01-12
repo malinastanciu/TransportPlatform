@@ -1,0 +1,18 @@
+.custom-scrollbar {
+    position: relative;
+    overflow: auto;
+    width: 1200px;
+}
+
+.table-wrapper-scroll-y {
+    display: block;
+}
+
+.table-bordered {
+    text-align: left;
+}
+th{
+    background-color: steelblue;
+    color: white;
+    font-size: 10px;
+}

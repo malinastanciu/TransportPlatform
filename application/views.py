@@ -250,3 +250,14 @@ def generate_contract_for_request(request, pk):
     p.save()
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='contract.pdf')
+
+
+@allowed_users(allowed_roles=['transportator', 'client'])
+@login_required(login_url='login')
+def contracts(request):
+    context = create_context(request)
+    contracts = Contract.objects.all()
+    user = request.user
+    context['contracts'] = contracts
+    context['user'] = user
+    return render(request, 'application/contracts.html', context=context)

@@ -1,0 +1,53 @@
+{% extends 'application/main_layout_application.html' %}
+{% load static %}
+
+{% block home %}
+{% endblock %}
+
+{% block page_title %}
+    Contracts
+{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'application/css/contracts.css' %}">
+    <div style="margin-left: 300px; margin-top: 20px">
+        <h1 style="">Contracts</h1>
+            <div class="table-wrapper-scroll-y custom-scrollbar">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Transporter</th>
+                            <th>Sender</th>
+                            <th>Registration plate of truck </th>
+                            <th>Source</th>
+                            <th>Destination</th>
+                            <th>Date</th>
+                            <th>Freight type</th>
+                            <th>Final price</th>
+                            <th>Km</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for contract in contracts %}
+                            {% if contract.senderID.id == user.id or contract.transporterID.id == user.id %}
+                            <tr>
+                                <td>{{ contract.id }}</td>
+                                <td>{{ contract.transporterID.first_name }} {{ contract.transporterID.last_name }}</td>
+                                <td>{{ contract.senderID.first_name }} {{ contract.senderID.last_name }}</td>
+                                <td>{{ contract.truckID.registration_plate }}</td>
+                                <td>{{ contract.source }}</td>
+                                <td>{{ contract.destination }}</td>
+                                <td>{{ contract.date }}</td>
+                                <td>{{ contract.freight_type }}</td>
+                                <td>{{ contract.final_price }}</td>
+                                <td>{{ contract.km }}</td>
+
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    </div>
+{% endblock %}
