@@ -23,7 +23,7 @@
                             <th>Departure date</th>
                             <th>Arrival date</th>
                             <th>Price per km</th>
-                            <th>Price per km with empty truck</th>
+                            <th>Pkm empty truck</th>
                             <th>Source</th>
                             <th>Destination</th>
                             <th>Phone</th>
@@ -57,7 +57,7 @@
                                 <td>{{ offer.email }}</td>
                                 <td>{{ offer.other_details }}</td>
                                 <td>
-                                    <form action="{% url 'generate_contract' offer.id %}" method="POST">
+                                    <form action="{% url 'generate_contract_for_offer' offer.id %}" method="POST">
                                         {% csrf_token %}
                                         <button class="btn btn-sm" style="background-color: darkslategray; color: white">Accept</button>
                                     </form>

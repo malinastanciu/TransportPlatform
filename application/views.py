@@ -160,9 +160,8 @@ def requests(request):
     return render(request, "application/requests.html", context)
 
 
-@allowed_users(allowed_roles=['transportator', 'client'])
-def generate_contract(request, pk):
-    # Create a file-like buffer to receive PDF data.
+@allowed_users(allowed_roles=['client'])
+def generate_contract_for_offer(request, pk):
     buffer = io.BytesIO()
     offer = Offer.objects.get(id=pk)
     p = canvas.Canvas(buffer)
@@ -177,11 +176,9 @@ def generate_contract(request, pk):
         contract.freight_type = offer.freight_type
         contract.km = 10000
         contract.final_price = offer.price_per_km * contract.km
-
+        offer.delete()
         contract.save()
 
-    # Draw things on the PDF. Here's where the PDF generation happens.
-    # See the ReportLab documentation for the full list of functionality.
     p.drawString(50, 750, 'Contract' + '    ' + 'No: ' + str(contract.id))
     p.drawString(50, 710, 'The current contract is made between the component parts, ' +
                  'the client: ' + request.user.last_name + ' ' + request.user.first_name)
@@ -197,9 +194,71 @@ def generate_contract(request, pk):
     p.drawString(50, 540, 'The price agreed by the two parts is going to be paid by the client and is '
                  + str(contract.final_price) + ' lei.')
     p.drawString(50, 480, 'The date of the contract is ' + str(contract.date) + '.')
-    p.drawImage('C:\\Users\\40729\\Desktop\\Automatica si Calculatoare\\TransportPlatform\\application\\static\\application'
-                '\\css\\images\\signature.png', 40, 300, 220, 150)
+    p.drawImage(
+        'C:\\Users\\40729\\Desktop\\Automatica si Calculatoare\\TransportPlatform\\application\\static\\application'
+        '\\css\\images\\signature.png', 40, 300, 220, 150)
     p.showPage()
     p.save()
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='contract.pdf')
+
+
+@allowed_users(allowed_roles=['transportator'])
+def generate_contract_for_request(request, pk):
+    buffer = io.BytesIO()
+    req = Request.objects.get(id=pk)
+    p = canvas.Canvas(buffer)
+    contract = Contract()
+    trucks = Truck.objects.filter(ownerId=request.user)
+    for truck in trucks:
+        if req.weight <= truck.max_load:
+            t = truck
+
+    print(t.id)
+    if request.method == 'POST':
+        contract.transporterID = request.user
+        contract.senderID = req.clientID
+        contract.truckID = t
+        contract.source = req.source
+        contract.destination = req.destination
+        contract.date = datetime.date.today()
+        contract.freight_type = req.freight_type
+        contract.final_price = req.max_price
+        contract.km = 1000
+        req.delete()
+        contract.save()
+
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawString(50, 750, 'Contract' + '    ' + 'No: ' + str(contract.id))
+    p.drawString(50, 710, 'The current contract is made between the component parts, ' +
+                 'the client: ' + req.clientID.last_name + ' ' + req.clientID.first_name)
+    p.drawString(40, 690, ' and the transporter: ' + request.user.last_name + ' ' + request.user.first_name + '.')
+    p.drawString(50, 660, 'The transporter is obliged to take the goods from the source location: ' + contract.source)
+    p.drawString(40, 640, 'and deliver them to the destination location: ' + contract.destination + '.')
+    p.drawString(50, 610, 'The transporter will take over the goods of the type ' + contract.freight_type +
+                 ', will use the truck with the')
+    p.drawString(40, 590, '  following information: ' + 'truck id ' + str(contract.truckID.id) + ', '
+                 + 'registration plate ' + contract.truckID.registration_plate + ', brand '
+                 + t.brand + ', type ' + contract.truckID.type + ', ')
+    p.drawString(40, 570, 'fuel ' + contract.truckID.fuel + ', maximum load ' + str(contract.truckID.max_load) + '.')
+    p.drawString(50, 540, 'The price agreed by the two parts is going to be paid by the client and is '
+                 + str(contract.final_price) + ' lei.')
+    p.drawString(50, 480, 'The date of the contract is ' + str(contract.date) + '.')
+    p.drawImage(
+        'C:\\Users\\40729\\Desktop\\Automatica si Calculatoare\\TransportPlatform\\application\\static\\application'
+        '\\css\\images\\signature.png', 40, 300, 220, 150)
+    p.showPage()
+    p.save()
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename='contract.pdf')
+
+
+@login_required(login_url='login')
+def contracts(request):
+    context = create_context(request)
+    contracts = Contract.objects.all()
+    user = request.user
+    context['contracts'] = contracts
+    context['user'] = user
+    return render(request, 'application/contracts.html', context=context)
