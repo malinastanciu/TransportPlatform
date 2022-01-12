@@ -175,8 +175,9 @@ def generate_contract(request, pk):
         contract.destination = offer.destination
         contract.date = datetime.date.today()
         contract.freight_type = offer.freight_type
-        contract.final_price = offer.price_per_km * 1000
         contract.km = 10000
+        contract.final_price = offer.price_per_km * contract.km
+
         contract.save()
 
     # Draw things on the PDF. Here's where the PDF generation happens.
@@ -193,9 +194,11 @@ def generate_contract(request, pk):
                  + 'registration plate ' + contract.truckID.registration_plate + ', brand '
                  + contract.truckID.brand + ', type ' + contract.truckID.type + ', ')
     p.drawString(40, 570, 'fuel ' + contract.truckID.fuel + ', maximum load ' + str(contract.truckID.max_load) + '.')
-    p.drawString(50, 500, 'The date of the contract is ' + str(contract.date) + '.')
+    p.drawString(50, 540, 'The price agreed by the two parts is going to be paid by the client and is '
+                 + str(contract.final_price) + ' lei.')
+    p.drawString(50, 480, 'The date of the contract is ' + str(contract.date) + '.')
     p.drawImage('C:\\Users\\40729\\Desktop\\Automatica si Calculatoare\\TransportPlatform\\application\\static\\application'
-                '\\css\\images\\signature.png', 40, 300, 200, 150)
+                '\\css\\images\\signature.png', 40, 300, 220, 150)
     p.showPage()
     p.save()
     buffer.seek(0)
