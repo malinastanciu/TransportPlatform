@@ -1,15 +1,14 @@
 import datetime
-
+import io
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User, Group
-from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
 
 from application.functions import create_context
-from .decorators import allowed_users
-from application.models import Offer, Truck, Request
-from datetime import date
+from application.decorators import allowed_users
+from application.models import Offer, Truck, Request, Contract
 
 TYPE_FREIGHT = ['furniture', 'animals', 'food', 'cars', 'medication', 'electronics', 'machinery']
 FUEL_TYPE = ['benzine', 'diesel']
@@ -159,3 +158,45 @@ def requests(request):
     context['users'] = users
     context['requests'] = requests
     return render(request, "application/requests.html", context)
+
+
+@allowed_users(allowed_roles=['transportator', 'client'])
+def generate_contract(request, pk):
+    # Create a file-like buffer to receive PDF data.
+    buffer = io.BytesIO()
+    offer = Offer.objects.get(id=pk)
+    p = canvas.Canvas(buffer)
+    contract = Contract()
+    if request.method == 'POST':
+        contract.transporterID = offer.senderID
+        contract.senderID = request.user
+        contract.truckID = offer.truckID
+        contract.source = offer.source
+        contract.destination = offer.destination
+        contract.date = datetime.date.today()
+        contract.freight_type = offer.freight_type
+        contract.final_price = offer.price_per_km * 1000
+        contract.km = 10000
+        contract.save()
+
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawString(50, 750, 'Contract' + '    ' + 'No: ' + str(contract.id))
+    p.drawString(50, 710, 'The current contract is made between the component parts, ' +
+                 'the client: ' + request.user.last_name + ' ' + request.user.first_name)
+    p.drawString(40, 690, ' and the transporter: ' + offer.senderID.last_name + ' ' + offer.senderID.first_name + '.')
+    p.drawString(50, 660, 'The transporter is obliged to take the goods from the source location: ' + contract.source)
+    p.drawString(40, 640, 'and deliver them to the destination location: ' + contract.destination + '.')
+    p.drawString(50, 610, 'The transporter will take over the goods of the type ' + contract.freight_type +
+                 ', will use the truck with the')
+    p.drawString(40, 590, '  following information: ' + 'truck id ' + str(contract.truckID.id) + ', '
+                 + 'registration plate ' + contract.truckID.registration_plate + ', brand '
+                 + contract.truckID.brand + ', type ' + contract.truckID.type + ', ')
+    p.drawString(40, 570, 'fuel ' + contract.truckID.fuel + ', maximum load ' + str(contract.truckID.max_load) + '.')
+    p.drawString(50, 500, 'The date of the contract is ' + str(contract.date) + '.')
+    p.drawImage('C:\\Users\\40729\\Desktop\\Automatica si Calculatoare\\TransportPlatform\\application\\static\\application'
+                '\\css\\images\\signature.png', 40, 300, 200, 150)
+    p.showPage()
+    p.save()
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename='contract.pdf')
