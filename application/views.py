@@ -194,8 +194,9 @@ def generate_contract_for_offer(request, pk):
     p.drawString(50, 540, 'The price agreed by the two parts is going to be paid by the client and is '
                  + str(contract.final_price) + ' lei.')
     p.drawString(50, 480, 'The date of the contract is ' + str(contract.date) + '.')
-    p.drawImage('C:\\Users\\40729\\Desktop\\Automatica si Calculatoare\\TransportPlatform\\application\\static\\application'
-                '\\css\\images\\signature.png', 40, 300, 220, 150)
+    p.drawImage(
+        'C:\\Users\\40729\\Desktop\\Automatica si Calculatoare\\TransportPlatform\\application\\static\\application'
+        '\\css\\images\\signature.png', 40, 300, 220, 150)
     p.showPage()
     p.save()
     buffer.seek(0)
@@ -244,15 +245,15 @@ def generate_contract_for_request(request, pk):
     p.drawString(50, 540, 'The price agreed by the two parts is going to be paid by the client and is '
                  + str(contract.final_price) + ' lei.')
     p.drawString(50, 480, 'The date of the contract is ' + str(contract.date) + '.')
-    p.drawImage('C:\\Users\\40729\\Desktop\\Automatica si Calculatoare\\TransportPlatform\\application\\static\\application'
-                '\\css\\images\\signature.png', 40, 300, 220, 150)
+    p.drawImage(
+        'C:\\Users\\40729\\Desktop\\Automatica si Calculatoare\\TransportPlatform\\application\\static\\application'
+        '\\css\\images\\signature.png', 40, 300, 220, 150)
     p.showPage()
     p.save()
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='contract.pdf')
 
 
-@allowed_users(allowed_roles=['transportator', 'client'])
 @login_required(login_url='login')
 def contracts(request):
     context = create_context(request)
