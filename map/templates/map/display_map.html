@@ -19,130 +19,135 @@
         <div id="viewDiv"></div>
     </div>
 
-{#    <script>#}
-{#    require(["esri/config","esri/Map", "esri/views/MapView"], function (esriConfig,Map, MapView) {#}
-{##}
-{#        esriConfig.apiKey = "AAPK919b851a40774eb0bbb839e2d7093087M9SK1JSLpDszmm8EXLomKMqRbim0UBBuuFq5tFzpCMCTFyf-5RjfMO8wOa8Mcjya";#}
-{##}
-{#        const map = new Map({#}
-{#          basemap: "arcgis-topographic" // Basemap layer service#}
-{#        });#}
-{##}
-{#        const view = new MapView({#}
-{#          map: map,#}
-{#          center: [{{ source_long }}, {{ source_lat }}], // Longitude, latitude#}
-{#          zoom: 13, // Zoom level#}
-{#          container: "viewDiv" // Div element#}
-{#        });#}
-{##}
-{#      });#}
-{#    </script>#}
+    {#    <script>#}
+    {#    require(["esri/config","esri/Map", "esri/views/MapView"], function (esriConfig,Map, MapView) {#}
+    {##}
+    {#        esriConfig.apiKey = "AAPK919b851a40774eb0bbb839e2d7093087M9SK1JSLpDszmm8EXLomKMqRbim0UBBuuFq5tFzpCMCTFyf-5RjfMO8wOa8Mcjya";#}
+    {##}
+    {#        const map = new Map({#}
+    {#          basemap: "arcgis-topographic" // Basemap layer service#}
+    {#        });#}
+    {##}
+    {#        const view = new MapView({#}
+    {#          map: map,#}
+    {#          center: [{{ source_long }}, {{ source_lat }}], // Longitude, latitude#}
+    {#          zoom: 13, // Zoom level#}
+    {#          container: "viewDiv" // Div element#}
+    {#        });#}
+    {##}
+    {#      });#}
+    {#    </script>#}
     <script>
-    require([
-      "esri/config",
-      "esri/Map",
-      "esri/views/MapView",
+        require([
+            "esri/config",
+            "esri/Map",
+            "esri/views/MapView",
 
-      "esri/Graphic",
-      "esri/rest/route",
-      "esri/rest/support/RouteParameters",
-      "esri/rest/support/FeatureSet"
+            "esri/Graphic",
+            "esri/rest/route",
+            "esri/rest/support/RouteParameters",
+            "esri/rest/support/FeatureSet"
 
-    ], function(esriConfig, Map, MapView, Graphic, route, RouteParameters, FeatureSet) {
+        ], function (esriConfig, Map, MapView, Graphic, route, RouteParameters, FeatureSet) {
 
-    esriConfig.apiKey = "AAPK919b851a40774eb0bbb839e2d7093087M9SK1JSLpDszmm8EXLomKMqRbim0UBBuuFq5tFzpCMCTFyf-5RjfMO8wOa8Mcjya";
+            esriConfig.apiKey = "AAPK919b851a40774eb0bbb839e2d7093087M9SK1JSLpDszmm8EXLomKMqRbim0UBBuuFq5tFzpCMCTFyf-5RjfMO8wOa8Mcjya";
 
-    const map = new Map({
-      basemap: "arcgis-navigation" //Basemap layer service
-    });
+            const map = new Map({
+                basemap: "arcgis-navigation" //Basemap layer service
+            });
 
-    const view = new MapView({
-      container: "viewDiv",
-      map: map,
-      center: [-118.24532,34.05398], //Longitude, latitude
-      zoom: 12
-    });
+            const view = new MapView({
+                container: "viewDiv",
+                map: map,
+                center: [({{ source_long }} + {{ destination_long }})/2, ({{ source_lat }} + {{ destination_lat }})/2], //Longitude, latitude
+                zoom: 10
+            });
 
-    const routeUrl = "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+            const routeUrl = "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
 
-    view.on("click", function(event){
+            view.on("click", function (event) {
 
-      if (view.graphics.length === 0) {
-        addGraphic("origin", event.mapPoint);
-      } else if (view.graphics.length === 1) {
-        addGraphic("destination", event.mapPoint);
+                if (view.graphics.length === 0) {
+                    event.mapPoint.latitude = {{ source_lat }};
+                    event.mapPoint.longitude = {{ source_long }};
+                    addGraphic("origin", event.mapPoint);
+                } else if (view.graphics.length === 1) {
+                    event.mapPoint.latitude = {{ destination_lat }};
+                    event.mapPoint.longitude = {{ destination_long }};
+                    addGraphic("destination", event.mapPoint);
+                    console.log(typeof (event.mapPoint.latitude))
 
-        getRoute(); // Call the route service
+                    getRoute(); // Call the route service
 
-      } else {
-        view.graphics.removeAll();
-        addGraphic("origin",event.mapPoint);
-      }
+                } else {
+                    view.graphics.removeAll();
+                    addGraphic("origin", event.mapPoint);
+                }
 
-    });
+            });
 
-    function addGraphic(type, point) {
-      const graphic = new Graphic({
-        symbol: {
-          type: "simple-marker",
-          color: (type === "origin") ? "white" : "black",
-          size: "8px"
-        },
-        geometry: point
-      });
-      view.graphics.add(graphic);
-    }
+            function addGraphic(type, point) {
+                const graphic = new Graphic({
+                    symbol: {
+                        type: "simple-marker",
+                        color: (type === "origin") ? "white" : "black",
+                        size: "8px"
+                    },
+                    geometry: point
+                });
+                view.graphics.add(graphic);
+            }
 
-    function getRoute() {
-      const routeParams = new RouteParameters({
-        stops: new FeatureSet({
-          features: view.graphics.toArray()
-        }),
+            function getRoute() {
+                const routeParams = new RouteParameters({
+                    stops: new FeatureSet({
+                        features: view.graphics.toArray()
+                    }),
 
-        returnDirections: true
+                    returnDirections: true
 
-      });
+                });
 
-      route.solve(routeUrl, routeParams)
-        .then(function(data) {
-          data.routeResults.forEach(function(result) {
-            result.route.symbol = {
-              type: "simple-line",
-              color: [5, 150, 255],
-              width: 3
-            };
-            view.graphics.add(result.route);
-          });
+                route.solve(routeUrl, routeParams)
+                    .then(function (data) {
+                        data.routeResults.forEach(function (result) {
+                            result.route.symbol = {
+                                type: "simple-line",
+                                color: [5, 150, 255],
+                                width: 3
+                            };
+                            view.graphics.add(result.route);
+                        });
 
-          // Display directions
-         if (data.routeResults.length > 0) {
-           const directions = document.createElement("ol");
-           directions.classList = "esri-widget esri-widget--panel esri-directions__scroller";
-           directions.style.marginTop = "0";
-           directions.style.padding = "15px 15px 15px 30px";
-           const features = data.routeResults[0].directions.features;
+                        // Display directions
+                        if (data.routeResults.length > 0) {
+                            const directions = document.createElement("ol");
+                            directions.classList = "esri-widget esri-widget--panel esri-directions__scroller";
+                            directions.style.marginTop = "0";
+                            directions.style.padding = "15px 15px 15px 30px";
+                            const features = data.routeResults[0].directions.features;
 
-           // Show each direction
-           features.forEach(function(result,i){
-             const direction = document.createElement("li");
-             direction.innerHTML = result.attributes.text + " (" + result.attributes.length.toFixed(2) + " miles)";
-             directions.appendChild(direction);
-           });
+                            // Show each direction
+                            features.forEach(function (result, i) {
+                                const direction = document.createElement("li");
+                                direction.innerHTML = result.attributes.text + " (" + result.attributes.length.toFixed(2) + " miles)";
+                                directions.appendChild(direction);
+                            });
 
-          view.ui.empty("top-right");
-          view.ui.add(directions, "top-right");
+                            view.ui.empty("top-right");
+                            view.ui.add(directions, "top-right");
 
-         }
+                        }
 
-        })
+                    })
 
-        .catch(function(error){
-            console.log(error);
-        })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
 
-    }
+            }
 
-  });
-  </script>
+        });
+    </script>
 
 {% endblock %}

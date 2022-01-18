@@ -75,7 +75,7 @@
                     </a>
                 </li>
             {% endif %}
-            {% if 'transporter' in user_groups or 'client' in user_groups %}
+            {% if 'transportator' in user_groups or 'client' in user_groups %}
                 <li class="features-item">
                     <a href="{% url 'contracts' %}">
                         <i class="fa fa-file features-item-icon"></i>
@@ -83,6 +83,7 @@
                     </a>
                 </li>
             {% endif %}
+           
             {% if 'admin'  in user_groups %}
                 <li class="features-item">
                     <a href="{% url 'admin' %}">
