@@ -15,13 +15,6 @@ FUEL_TYPE = ['benzine', 'diesel']
 TRUCK_TYPE = ['truck', 'van', 'trailer', 'refrigerated truck']
 
 
-# Create your views here.
-# @login_required(login_url='login')
-# def home(request):
-#     gis = GIS()
-#     map = gis.map("Palm Springs, CA")
-#     return render(request, 'application/home.html', {'map': map})
-
 
 @login_required(login_url='login')
 def home(request):

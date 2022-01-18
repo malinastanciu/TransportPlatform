@@ -44,7 +44,7 @@
                                 <td>{{ contract.final_price }}</td>
                                 <td>{{ contract.km }}</td>
                                 <td>
-                                    <form action="" method="POST">
+                                    <form action="{% url 'display_map' contract.id %}" method="POST">
                                         {% csrf_token %}
                                         <button class="btn-sm btn" style="color: white; background-color: steelblue">View map</button>
                                     </form>
