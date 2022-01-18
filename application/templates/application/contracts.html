@@ -26,6 +26,7 @@
                             <th>Freight type</th>
                             <th>Final price</th>
                             <th>Km</th>
+                            <th>View map</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,6 +43,12 @@
                                 <td>{{ contract.freight_type }}</td>
                                 <td>{{ contract.final_price }}</td>
                                 <td>{{ contract.km }}</td>
+                                <td>
+                                    <form action="{% url 'display_map' contract.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <button class="btn-sm btn" style="color: white; background-color: steelblue">View map</button>
+                                    </form>
+                                </td>
 
                             </tr>
                             {% endif %}
