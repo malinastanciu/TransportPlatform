@@ -26,4 +26,6 @@ def display_map(request, pk):
     context['source_long'] = source.longitude
     context['destination_lat'] = destination.latitude
     context['destination_long'] = destination.longitude
+    context['source'] = source
+    context['destination'] = destination
     return render(request, 'map/display_map.html', context)
