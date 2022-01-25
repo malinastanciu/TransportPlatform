@@ -68,7 +68,13 @@ What's new legend: [*] changed; [+] added; [-] fixed; [!] notes;
 
 ### 22.01.2022
 - [+] [2h - Petrut] - Added 'my request' and started to implement suggestions 
-
+- [+] [2h - Malina] - Started working on documentation
 
 ### 24.01.2022
-- [+] [] - Added 'offers' suggestions, fixed contract bug
+- [+] [2h - Petrut] - Added 'offers' suggestions, fixed contract bug, map
+- [+] [2h - Malina, Petrut] - Worked on map
+- [+] [1h - Edi] - Working on documentation
+
+### 25.01.2022
+- [+] [2h - All team] - Final touches
+- [+] [2h - Edi] - Finished documentation
