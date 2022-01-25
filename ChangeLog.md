@@ -61,3 +61,14 @@ What's new legend: [*] changed; [+] added; [-] fixed; [!] notes;
 
 ### 18.01.2022
 - [+] [3h - All team] - Integrated map and route
+
+### 21.01.2022
+- [+] [1.5h - Petrut] - Added 'my offers' table
+- [+] [2h - Petrut] - Worked on map, added truck icon
+
+### 22.01.2022
+- [+] [2h - Petrut] - Added 'my request' and started to implement suggestions 
+
+
+### 24.01.2022
+- [+] [] - Added 'offers' suggestions, fixed contract bug

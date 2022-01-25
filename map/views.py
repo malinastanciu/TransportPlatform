@@ -20,8 +20,6 @@ def display_map(request, pk):
     geolocator2 = Nominatim()
     source = geolocator1.geocode(contract.source)
     destination = geolocator2.geocode(contract.destination)
-    print('Destination: ' + str(destination.latitude) + ' ' + str(destination.longitude))
-    print('Source: ' + str(source.latitude) + ' ' + str(source.longitude))
     context['source_lat'] = source.latitude
     context['source_long'] = source.longitude
     context['destination_lat'] = destination.latitude

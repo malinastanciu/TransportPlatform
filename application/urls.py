@@ -16,4 +16,6 @@ urlpatterns = [
          name='generate_contract_for_offer'),
     path('generate-contract-for-request/<str:pk>', application_views.generate_contract_for_request,
          name='generate_contract_for_request'),
+    path('delete_offer/<str:pk>', application_views.delete_offer, name='delete_offer'),
+    path('delete_request/<str:pk>', application_views.delete_request, name='delete_request'),
 ]

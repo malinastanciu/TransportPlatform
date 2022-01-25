@@ -10,62 +10,163 @@
 
 {% block content %}
     <link rel="stylesheet" href="{% static 'application/css/create_offer.css' %}">
-    <div class="content" style="margin-top: 20px; margin-left: 300px">
-        <h1> Create an offer </h1>
-        <form action="" method="post">
-            {% csrf_token %}
-            <div class="container1" style="border-radius: 5px;
+    <div class="" style="margin-top: 20px; margin-left: 300px">
+        <h3>Your offers:</h3>
+        <table id="offerstb">
+            <tr>
+                <th>OfferId</th>
+                <th>Truck</th>
+                <th>Freight type</th>
+                <th>Departure date</th>
+                <th>Arrival date</th>
+                <th>Price per km</th>
+                <th>P/km e. truck</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>Cancel</th>
+            </tr>
+            {% for off in all_offers %}
+                <tr>
+                    <td>{{ off.id }}</td>
+                    <td>{{ off.truckID.registration_plate }}</td>
+                    <td>{{ off.freight_type }}</td>
+                    <td>{{ off.departure_date }}</td>
+                    <td>{{ off.arrival_date }}</td>
+                    <td>{{ off.price_per_km }}</td>
+                    <td>{{ off.price_per_km_emptyTruck }}</td>
+                    <td>{{ off.source }}</td>
+                    <td>{{ off.destination }}</td>
+                    <td>
+                        <form action="{% url 'delete_offer' off.id %}" method="POST">
+                            {% csrf_token %}
+                            <button class="btn btn-sm" style="background-color: darkslategray; color: white">Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </table>
+        <br>
+
+        <div class="row">
+            <div class="column" style="width: 600px">
+                <h3> Create an offer </h3>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="container1 " style="border-radius: 5px;
                                             background-color: #f2f2f2;
                                             padding: 20px;
                                             width: 350px;
                                             margin-left: 0px;">
-                <label for="sender">Sender: {{ sender }} </label><br>
-                <label for="truckID">Truck:</label>
-                <select id="truckID" name="truckID">
-                    {% for truck in trucks %}
-                        <option value="{{ truck.id }}">{{ truck.registration_plate }}</option>
-                    {% endfor %}
-                </select><br>
+                        <label for="sender">Sender: {{ sender }} </label><br>
+                        <label for="truckID">Truck:</label>
+                        <select id="truckID" name="truckID">
+                            {% for truck in trucks %}
+                                <option value="{{ truck.id }}">{{ truck.registration_plate }}</option>
+                            {% endfor %}
+                        </select><br>
 
-                <label for="f_t">Freight Type:</label>
-                <select id="f_t" name="f_t">
-                    {% for freight in f_t %}
-                        <option value="{{ freight }}">{{ freight }}</option>
-                    {% endfor %}
-                </select><br>
+                        <label for="f_t">Freight Type:</label>
+                        <select id="f_t" name="f_t">
+                            {% for freight in f_t %}
+                                <option value="{{ freight }}">{{ freight }}</option>
+                            {% endfor %}
+                        </select><br>
 
-                <label for="price_per_km">Price per km:</label>
-                <input type="number" id="price_per_km" name="price_per_km"><br>
+                        <label for="price_per_km">Price per km:</label>
+                        <input type="number" id="price_per_km" name="price_per_km"><br>
 
-                <label for="price_per_km_emptyTruck">Price per km with empty truck:</label>
-                <input type="number" id="price_per_km_emptyTruck" name="price_per_km_emptyTruck"> <br>
+                        <label for="price_per_km_emptyTruck">Price per km with empty truck:</label>
+                        <input type="number" id="price_per_km_emptyTruck" name="price_per_km_emptyTruck"> <br>
 
-                <label for="departure_date">Departure date:</label>
-                <input type="date" id="departure_date" name="departure_date"> <br>
+                        <label for="departure_date">Departure date:</label>
+                        <input type="date" id="departure_date" name="departure_date"> <br>
 
-                <label for="arrival_date">Arrival date:</label>
-                <input type="date" id="arrival_date" name="arrival_date"> <br>
+                        <label for="arrival_date">Arrival date:</label>
+                        <input type="date" id="arrival_date" name="arrival_date"> <br>
 
-                <label for="source">Source:</label>
-                <input type="text" id="source" name="source"> <br>
+                        <label for="source">Source:</label>
+                        <input type="text" id="source" name="source"> <br>
 
-                <label for="destination">Destination:</label>
-                <input type="text" id="destination" name="destination"> <br>
+                        <label for="destination">Destination:</label>
+                        <input type="text" id="destination" name="destination"> <br>
 
-                <label for="phone">Phone:</label>
-                <input type="tel" id="phone" name="phone"> <br>
+                        <label for="phone">Phone:</label>
+                        <input type="tel" id="phone" name="phone"> <br>
 
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email"> <br>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email"> <br>
 
-                <label for="other_details">Other details:</label>
-                <input type="text" id="other_details" name="other_details"> <br>
+                        <label for="other_details">Other details:</label>
+                        <input type="text" id="other_details" name="other_details"> <br><br>
 
-                <input type="submit" class="btn btn-info" value="Submit">
+                        <input type="button" class="btn btn-info" value="Search suggestions" id="sggBtn2"><br><br>
+                        <input type="submit" class="btn btn-info" value="Submit">
+                    </div>
+                </form>
             </div>
-        </form>
 
 
+            <div class="column" style="margin-top: 20px">
+                <h3> Current requests suggestions </h3>
+                <table id="suggestionstb2">
+                    <tr>
+                        <th>Source</th>
+                        <th>Destination</th>
+                        <th>Freight type</th>
+                        <th>Departure date</th>
+                        <th>Arrival date</th>
+                        <th>Max price/km</th>
+                    </tr>
+                    <tr>
+
+                    </tr>
+
+                </table>
+                <br>
+            </div>
+        </div>
     </div>
+
+
+
+    <script>
+        var tb = document.getElementById("suggestionstb2");
+        var src = document.getElementById("source");
+        var dest = document.getElementById("destination");
+        var m_prc = document.getElementById("max_price");
+
+
+        document.getElementById("sggBtn2").addEventListener("click", function () {
+            // adauga valorile care corespund
+            console.log(src.value);
+
+            {% for req in all_requests %}
+                if (String("{{ req.source }}").includes(src.value) ||
+                    float("{{ req.price_per_km }}") <= float(m_prc.value) ||
+                    String("{{ req.destination }}").includes(dest.value)) {
+                    var row = tb.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
+                    var cell5 = row.insertCell(4);
+                    var cell6 = row.insertCell(5);
+                    //cell7.innerHTML = "<form action=\"{% url 'generate_contract_for_offer' req.id %}\" method=\"POST\"> {% csrf_token %} <button class=\"btn btn-sm\" style=\"background-color: darkslategray; color: white\">Accept</button> </form>";
+
+                    cell1.innerHTML = String("{{ req.source }}");
+                    cell2.innerHTML = String("{{ req.destination }}");
+                    cell3.innerHTML = String("{{ req.freight_type }}");
+                    cell4.innerHTML = "{{ req.departure_date }}";
+                    cell5.innerHTML = String("{{ req.arrival_date }}");
+                    cell6.innerHTML = "{{ req.max_price }}"
+                }
+
+            {% endfor %}
+
+        });
+
+    </script>
 
 {% endblock %}

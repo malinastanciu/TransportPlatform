@@ -5,3 +5,48 @@
     width: 350px;
     margin-left: 0px;
 }
+#requesttb {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 80%;
+}
+
+#requesttb td, #requesttb th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#requesttb tr:nth-child(even){background-color: #f2f2f2;}
+
+#requesttb tr:hover {background-color: #ddd;}
+
+#requesttb  th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #0470aa;
+  color: white;
+}
+
+#suggestionstb {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 80%;
+}
+
+#suggestionstb td, #requesttb th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#suggestionstb tr:nth-child(even){background-color: #f2f2f2;}
+
+#suggestionstb tr:hover {background-color: #ddd;}
+
+#suggestionstb  th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: rgba(93, 4, 170, 0.97);
+  color: white;
+}

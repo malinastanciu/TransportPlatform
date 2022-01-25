@@ -10,10 +10,12 @@ from application.functions import create_context
 from application.decorators import allowed_users
 from application.models import Offer, Truck, Request, Contract
 
+from geopy import Nominatim
+import geopy.distance
+
 TYPE_FREIGHT = ['furniture', 'animals', 'food', 'cars', 'medication', 'electronics', 'machinery']
 FUEL_TYPE = ['benzine', 'diesel']
 TRUCK_TYPE = ['truck', 'van', 'trailer', 'refrigerated truck']
-
 
 
 @login_required(login_url='login')
@@ -45,6 +47,8 @@ def offer_view(request):
     user_groups = [group.name for group in user.groups.all()]
     offer = Offer()
     trucks = Truck.objects.all().filter(ownerId=request.user)
+    all_offers = Offer.objects.all().filter(senderID=request.user)
+    all_requests = Request.objects.all()
     sender = request.user.username.__str__()
     freight_type = TYPE_FREIGHT
     price_per_km = 0
@@ -68,10 +72,13 @@ def offer_view(request):
                'trucks': trucks,
                'sender': sender,
                'f_t': freight_type,
-               'price_per_km': price_per_km}
+               'price_per_km': price_per_km,
+               'all_offers': all_offers,
+               'all_requests': all_requests}
     return render(request, "application/create_offer.html", context)
 
 
+@allowed_users(allowed_roles=['transportator'])
 @login_required(login_url='login')
 def trucks(request):
     user = request.user
@@ -107,6 +114,8 @@ def create_request(request):
     destination = ''
     arrival_date = None
     weight = 0
+    cuurent_requests = Request.objects.all().filter(clientID=user)
+    all_offers = Offer.objects.all()
 
     if request.method == 'POST':
         transport_request.clientID = request.user
@@ -124,7 +133,8 @@ def create_request(request):
 
     context = {'user_groups': user_groups, 'client': client, 'freight_types': freight_types,
                'registration_date': registration_date, 'max_price': max_price, 'source': source,
-               'destination': destination, 'arrival_date': arrival_date, 'weight': weight}
+               'destination': destination, 'arrival_date': arrival_date, 'weight': weight,
+               'requests': cuurent_requests, 'all_offers': all_offers}
 
     return render(request, "application/create_request.html", context)
 
@@ -167,7 +177,17 @@ def generate_contract_for_offer(request, pk):
         contract.destination = offer.destination
         contract.date = datetime.date.today()
         contract.freight_type = offer.freight_type
-        contract.km = 10000
+
+        geolocator1 = Nominatim()
+        geolocator2 = Nominatim()
+        source = geolocator1.geocode(contract.source)
+        destination = geolocator2.geocode(contract.destination)
+
+        coords_1 = (source.longitude, source.latitude)
+        coords_2 = (destination.longitude, destination.latitude)
+
+        contract.km = float("{:.2f}".format(geopy.distance.distance(coords_1, coords_2).km))
+
         contract.final_price = offer.price_per_km * contract.km
         offer.delete()
         contract.save()
@@ -185,11 +205,12 @@ def generate_contract_for_offer(request, pk):
                  + contract.truckID.brand + ', type ' + contract.truckID.type + ', ')
     p.drawString(40, 570, 'fuel ' + contract.truckID.fuel + ', maximum load ' + str(contract.truckID.max_load) + '.')
     p.drawString(50, 540, 'The price agreed by the two parts is going to be paid by the client and is '
-                 + str(contract.final_price) + ' lei.')
+                 + "{:.2f}".format(contract.final_price) + ' lei for')
+    p.drawString(40, 520, 'a number of ' + str(contract.km) + ' km.')
     p.drawString(50, 480, 'The date of the contract is ' + str(contract.date) + '.')
     p.drawImage(
-        'C:\\Users\\40729\\Desktop\\Automatica si Calculatoare\\TransportPlatform\\application\\static\\application'
-        '\\css\\images\\signature.png', 40, 300, 220, 150)
+        'C:\\Users\\andre\\PycharmProjects\\TransportPlatform\\application\\static\\application\\css\\images\\signature.png',
+        40, 300, 220, 150)
     p.showPage()
     p.save()
     buffer.seek(0)
@@ -217,7 +238,16 @@ def generate_contract_for_request(request, pk):
         contract.date = datetime.date.today()
         contract.freight_type = req.freight_type
         contract.final_price = req.max_price
-        contract.km = 1000
+
+        geolocator1 = Nominatim()
+        geolocator2 = Nominatim()
+        source = geolocator1.geocode(contract.source)
+        destination = geolocator2.geocode(contract.destination)
+
+        coords_1 = (source.longitude, source.latitude)
+        coords_2 = (destination.longitude, destination.latitude)
+
+        contract.km = float("{:.2f}".format(geopy.distance.distance(coords_1, coords_2).km))
         req.delete()
         contract.save()
 
@@ -236,11 +266,12 @@ def generate_contract_for_request(request, pk):
                  + t.brand + ', type ' + contract.truckID.type + ', ')
     p.drawString(40, 570, 'fuel ' + contract.truckID.fuel + ', maximum load ' + str(contract.truckID.max_load) + '.')
     p.drawString(50, 540, 'The price agreed by the two parts is going to be paid by the client and is '
-                 + str(contract.final_price) + ' lei.')
+                 + "{:.2f}".format(contract.final_price) + ' lei for')
+    p.drawString(40, 520, 'a number of ' + str(contract.km) + ' km.')
     p.drawString(50, 480, 'The date of the contract is ' + str(contract.date) + '.')
     p.drawImage(
-        'C:\\Users\\40729\\Desktop\\Automatica si Calculatoare\\TransportPlatform\\application\\static\\application'
-        '\\css\\images\\signature.png', 40, 300, 220, 150)
+        'C:\\Users\\andre\\PycharmProjects\\TransportPlatform'
+        '\\application\\static\\application\\css\\images\\signature.png', 40, 300, 220, 150)
     p.showPage()
     p.save()
     buffer.seek(0)
@@ -255,3 +286,21 @@ def contracts(request):
     context['contracts'] = contracts
     context['user'] = user
     return render(request, 'application/contracts.html', context=context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['transportator'])
+def delete_offer(request, pk):
+    req = Offer.objects.get(id=pk)
+    if request.method == 'POST':
+        req.delete()
+    return redirect("create_offer")
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['client'])
+def delete_request(request, pk):
+    req = Request.objects.get(id=pk)
+    if request.method == 'POST':
+        req.delete()
+    return redirect("create_request")

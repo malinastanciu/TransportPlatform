@@ -12,57 +12,148 @@
     <link rel="stylesheet" href="{% static 'application/css/create_offer.css' %}">
     <link rel="stylesheet" href="{% static 'application/css/create_request.css' %}">
     <!-- TODO -->
-    <div class="content" style="margin-left: 300px; margin-top: 20px">
-    <h1>Create a request for transportation</h1>
-        <form action="" method="post">
-            {% csrf_token %}
-            <div class="container1">
-                <label for="client">Client: {{ client }} </label><br>
-                <label for="freight_types">Freight Type:</label>
-                <select id="freight_types" name="freight_types">
-                    {% for freight in freight_types %}
-                        <option value="{{ freight }}">{{ freight }}</option>
-                    {% endfor %}
-                </select><br>
-                <label for="source">Source:</label>
-                <input type="text" id="source" name="source"> <br>
+    <div style="margin-left: 300px">
+        <h3>Your current requests:</h3>
+        <table id="requesttb">
+            <tr>
+                <th>Id</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>Freight type</th>
+                <th>Departure date</th>
+                <th>Arrival date</th>
+                <th>Max price/km</th>
+                <th>Cancel</th>
+            </tr>
+            {% for req in requests %}
+                <tr>
+                    <td>{{ req.id }}</td>
+                    <td>{{ req.source }}</td>
+                    <td>{{ req.destination }}</td>
+                    <td>{{ req.freight_type }}</td>
+                    <td>{{ req.departure_date }}</td>
+                    <td>{{ req.arrival_date }}</td>
+                    <td>{{ req.max_price }}</td>
+                    <td>
+                        <form action="{% url 'delete_request' req.id %}" method="POST">
+                            {% csrf_token %}
+                            <button class="btn btn-sm" style="background-color: darkslategray; color: white">Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
 
-                <label for="destination">Destination:</label>
-                <input type="text" id="destination" name="destination"> <br>
-
-                <label for="departure_date">Departure date:</label>
-                <input type="date" id="departure_date" name="departure_date"><br>
-
-                <label for="arrival_date">Arrival date:</label>
-                <input type="date" id="arrival_date" name="arrival_date"><br>
-
-                <label for="max_price">Maximum price/km:</label>
-                <input type="number" step="0.01" id="max_price" name="max_price"><br>
-
-                <label for="weight">Weight</label>
-                <input type="number" id="weight" name="weight"> <br>
-
-
-                <label for="phone">Phone:</label>
-                <input type="tel" id="phone" name="phone"> <br>
-
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email"> <br>
-
-                <label for="other_details">Other details:</label>
-                <input type="text" id="other_details" name="other_details"> <br>
-
-                <input class="btn btn-success" type="submit" value="Submit">
-
-            </div>
-            <br>
-        </form>
-        <div class="container1">
-            <h4 style="text-shadow: #292932">N.B.</h4>
-            <p>Source and destination should have the following format: Latitude;Longitude<br>
-                Input example: 123.456;-38.5765</p>
-        </div>
-
+        </table>
+        <br>
     </div>
 
+    <div class="row">
+        <div class="column content" style="margin-left: 300px; margin-top: 20px; width: 600px; float: left">
+            <h3>Create a request for transportation</h3>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="container1">
+                    <label for="client">Client: {{ client }} </label><br>
+                    <label for="freight_types">Freight Type:</label>
+                    <select id="freight_types" name="freight_types">
+                        {% for freight in freight_types %}
+                            <option value="{{ freight }}">{{ freight }}</option>
+                        {% endfor %}
+                    </select><br>
+                    <label for="source">Source:</label>
+                    <input type="text" id="source" name="source"> <br>
+
+                    <label for="destination">Destination:</label>
+                    <input type="text" id="destination" name="destination"> <br>
+
+                    <label for="departure_date">Departure date:</label>
+                    <input type="date" id="departure_date" name="departure_date"><br>
+
+                    <label for="arrival_date">Arrival date:</label>
+                    <input type="date" id="arrival_date" name="arrival_date"><br>
+
+                    <label for="max_price">Maximum price/km:</label>
+                    <input type="number" id="max_price" name="max_price"><br>
+
+                    <label for="weight">Weight</label>
+                    <input type="number" id="weight" name="weight"> <br>
+
+
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" name="phone"> <br>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email"> <br>
+
+                    <label for="other_details">Other details:</label>
+                    <input type="text" id="other_details" name="other_details"> <br><br>
+
+                    <input class="btn btn-success" id="sggBtn" type="button" value="Search suggestions"><br><br>
+                    <input class="btn btn-success" type="submit" value="Submit">
+                </div>
+                <br>
+            </form>
+        </div>
+
+        <div class="column" style="margin-top: 20px">
+            <h3> Suggestions </h3>
+            <table id="suggestionstb">
+                <tr>
+                    <th>Source</th>
+                    <th>Destination</th>
+                    <th>Freight type</th>
+                    <th>Departure date</th>
+                    <th>Arrival date</th>
+                    <th>Max price/km</th>
+                </tr>
+                <tr>
+
+                </tr>
+
+            </table>
+            <br>
+
+
+        </div>
+    </div>
+
+
+    <script>
+        var tb = document.getElementById("suggestionstb");
+        var src = document.getElementById("source");
+        var dest = document.getElementById("destination");
+        var m_prc = document.getElementById("max_price");
+
+
+        document.getElementById("sggBtn").addEventListener("click", function () {
+            // adauga valorile care corespund
+            console.log(src.value);
+
+            {% for offer in all_offers %}
+                if (String("{{ offer.source }}").includes(src.value) ||
+                    float("{{ offer.price_per_km }}") <= float(m_prc.value) ||
+                    String("{{ offer.destination }}").includes(dest.value)) {
+                    var row = tb.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
+                    var cell5 = row.insertCell(4);
+                    var cell6 = row.insertCell(5);
+                    //cell7.innerHTML = "<form action=\"{% url 'generate_contract_for_offer' offer.id %}\" method=\"POST\"> {% csrf_token %} <button class=\"btn btn-sm\" style=\"background-color: darkslategray; color: white\">Accept</button> </form>";
+
+                    cell1.innerHTML = String("{{ offer.source }}");
+                    cell2.innerHTML = String("{{ offer.destination }}");
+                    cell3.innerHTML = String("{{ offer.freight_type }}");
+                    cell4.innerHTML = "{{ offer.departure_date }}";
+                    cell5.innerHTML = String("{{ offer.arrival_date }}");
+                    cell6.innerHTML = "{{ offer.price_per_km }}"
+                }
+
+            {% endfor %}
+
+        });
+
+    </script>
 {% endblock %}

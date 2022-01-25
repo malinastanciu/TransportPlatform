@@ -39,61 +39,85 @@
     {#    </script>#}
     <script>
         require([
-            "esri/config",
             "esri/Map",
             "esri/views/MapView",
-
             "esri/Graphic",
+            "esri/geometry/Point",
             "esri/rest/route",
             "esri/rest/support/RouteParameters",
-            "esri/rest/support/FeatureSet"
+            "esri/rest/support/FeatureSet",
+            "esri/config",
+            "esri/layers/GraphicsLayer",
+            "esri/symbols/PictureMarkerSymbol",
+            "esri/layers/FeatureLayer",
+            "esri/rest/locator"
+        ], (
+            Map,
+            MapView,
+            Graphic,
+            Point,
+            route,
+            RouteParameters,
+            FeatureSet,
+            esriConfig,
+            GraphicsLayer,
+            PictureMarkerSymbol,
+            FeatureLayer,
+            locator
+        ) => {
+            const apiKey =
+                "AAPK919b851a40774eb0bbb839e2d7093087M9SK1JSLpDszmm8EXLomKMqRbim0UBBuuFq5tFzpCMCTFyf-5RjfMO8wOa8Mcjya";
 
-        ], function (esriConfig, Map, MapView, Graphic, route, RouteParameters, FeatureSet) {
-
-            esriConfig.apiKey = "AAPK919b851a40774eb0bbb839e2d7093087M9SK1JSLpDszmm8EXLomKMqRbim0UBBuuFq5tFzpCMCTFyf-5RjfMO8wOa8Mcjya";
+            esriConfig.apiKey = apiKey;
 
             const map = new Map({
-                basemap: "arcgis-navigation" //Basemap layer service
+                basemap: "arcgis-navigation",
             });
+
+
+            const long_sursa = {{ source_long }};
+            const lat_sursa = {{ source_lat }};
+            const long_dst = {{ destination_long }};
+            const lat_dst = {{ destination_lat }};
+            const center = new Point([(long_sursa + long_dst) / 2, (lat_sursa + lat_dst) / 2]);
+
+            const origin = new Point([long_sursa, lat_sursa]);
+            const destination = new Point([long_dst, lat_dst]);
+
+            var distanta;
+            var timp;
 
             const view = new MapView({
                 container: "viewDiv",
                 map: map,
-                center: [({{ source_long }} + {{ destination_long }})/2, ({{ source_lat }} + {{ destination_lat }})/2], //Longitude, latitude
-                zoom: 10
+                center: center,
+                zoom: 10,
+                constraints: {
+                    snapToZoom: true,
+                },
             });
 
-            const routeUrl = "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
-
-            view.on("click", function (event) {
-
-                if (view.graphics.length === 0) {
-                    event.mapPoint.latitude = {{ source_lat }};
-                    event.mapPoint.longitude = {{ source_long }};
-                    addGraphic("origin", event.mapPoint);
-                } else if (view.graphics.length === 1) {
-                    event.mapPoint.latitude = {{ destination_lat }};
-                    event.mapPoint.longitude = {{ destination_long }};
-                    addGraphic("destination", event.mapPoint);
-                    console.log(typeof (event.mapPoint.latitude))
-
-                    getRoute(); // Call the route service
-
-                } else {
-                    view.graphics.removeAll();
-                    addGraphic("origin", event.mapPoint);
-                }
-
+            view.when(() => {
+                setTimeout(() => {
+                    addGraphic("start", origin);
+                    setTimeout(() => {
+                        addGraphic("finish", destination);
+                        getRoute();
+                    }, 10);
+                }, 20);
             });
+
+            const routeUrl =
+                "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
 
             function addGraphic(type, point) {
                 const graphic = new Graphic({
                     symbol: {
                         type: "simple-marker",
-                        color: (type === "origin") ? "white" : "black",
-                        size: "8px"
+                        color: type === "start" ? "white" : "black",
+                        size: "12px",
                     },
-                    geometry: point
+                    geometry: point,
                 });
                 view.graphics.add(graphic);
             }
@@ -101,50 +125,128 @@
             function getRoute() {
                 const routeParams = new RouteParameters({
                     stops: new FeatureSet({
-                        features: view.graphics.toArray()
+                        features: view.graphics.toArray(),
                     }),
-
-                    returnDirections: true
-
+                    returnDirections: true,
                 });
 
-                route.solve(routeUrl, routeParams)
-                    .then(function (data) {
-                        data.routeResults.forEach(function (result) {
-                            result.route.symbol = {
-                                type: "simple-line",
-                                color: [5, 150, 255],
-                                width: 3
-                            };
-                            view.graphics.add(result.route);
-                        });
+                route
+                    .solve(routeUrl, routeParams)
+                    .then((data) => {
+                        showRoutes(data.routeResults);
+                        var totalDriveTime = data.routeResults[0].directions.totalDriveTime;
 
-                        // Display directions
-                        if (data.routeResults.length > 0) {
-                            const directions = document.createElement("ol");
-                            directions.classList = "esri-widget esri-widget--panel esri-directions__scroller";
-                            directions.style.marginTop = "0";
-                            directions.style.padding = "15px 15px 15px 30px";
-                            const features = data.routeResults[0].directions.features;
-
-                            // Show each direction
-                            features.forEach(function (result, i) {
-                                const direction = document.createElement("li");
-                                direction.innerHTML = result.attributes.text + " (" + result.attributes.length.toFixed(2) + " miles)";
-                                directions.appendChild(direction);
-                            });
-
-                            view.ui.empty("top-right");
-                            view.ui.add(directions, "top-right");
-
+                        function timeConvert(n) {
+                            var num = n;
+                            var hours = num / 60;
+                            var rhours = Math.floor(hours);
+                            var minutes = (hours - rhours) * 60;
+                            var rminutes = Math.round(minutes);
+                            return (
+                                rhours +
+                                "h" +
+                                rminutes +
+                                "min"
+                            );
                         }
 
+                        timp = timeConvert(totalDriveTime);
+                        showDirections(data.routeResults[0].directions.features, timp);
                     })
-
-                    .catch(function (error) {
+                    .catch((error) => {
                         console.log(error);
-                    })
+                    });
 
+                function showRoutes(routes) {
+                    var graphicsLayer = new GraphicsLayer();
+                    map.add(graphicsLayer);
+
+                    let long_arr = [];
+                    let lat_arr = [];
+
+                    routes.forEach((result) => {
+                        result.route.symbol = {
+                            type: "simple-line",
+                            color: [255, 0, 0],
+                            width: 2,
+                        };
+                        view.graphics.add(result.route, 0);
+
+                        for (let i = 0; i < result.route.geometry.paths[0].length; i++) {
+                            long_arr.push(result.route.geometry.paths[0][i][0]);
+                            lat_arr.push(result.route.geometry.paths[0][i][1]);
+                        }
+                    });
+
+
+                    function addPoint(long, lat) {
+
+                        var pointGraphic = new Graphic({
+                            geometry: {
+                                type: "point",
+                                longitude: long,
+                                latitude: lat
+                            },
+
+                            symbol: {
+                                type: "web-style",
+                                name: "push-pin-2",
+                                styleName: "Esri2DPointSymbolsStyle",
+                            },
+                        });
+                        graphicsLayer.add(pointGraphic);
+                        return pointGraphic;
+                    }
+
+                    long_arr = long_arr.reverse();
+                    lat_arr = lat_arr.reverse();
+
+                    function animatePoint() {
+                        graphicsLayer.removeAll();
+                        var x = long_arr.pop();
+                        var y = lat_arr.pop();
+                        point = addPoint(x, y);
+
+                    }
+
+                    function runTimer() {
+                        setTimeout(() => {
+                            animatePoint();
+                            if (long_arr.length !== 0 && lat_arr.length !== 0) runTimer();
+                        }, 100);
+                    }
+
+                    runTimer();
+                }
+
+                function showDirections(directions, timp) {
+                    function showRouteDirections(directions) {
+                        const directionsList = document.createElement("ol");
+                        directions.forEach((result, i) => {
+                            const direction = document.createElement("li");
+                            direction.innerHTML =
+                                result.attributes.text +
+                                (result.attributes.length > 0 ?
+                                    " (" + result.attributes.length.toFixed(2) + " miles)" :
+                                    "");
+                            directionsList.appendChild(direction);
+                        });
+                        directionsElement.appendChild(directionsList);
+                    }
+
+                    const directionsElement = document.createElement("div");
+                    directionsElement.innerHTML = "<h3>Estimated time:" + timp + "</h3><h3>Directions</h3>";
+                    directionsElement.classList =
+                        "esri-widget esri-widget--panel esri-directions__scroller directions";
+                    directionsElement.style.marginTop = "0";
+                    directionsElement.style.padding = "0 15px";
+                    directionsElement.style.minHeight = "365px";
+
+                    showRouteDirections(directions);
+
+                    view.ui.empty("top-right");
+                    view.ui.add(directionsElement, "top-right");
+                }
             }
 
         });
